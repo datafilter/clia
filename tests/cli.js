@@ -29,10 +29,17 @@ module.exports = async ({ test, assert, affirm, alike }) => {
         , test("no args return empty object", () => {
             alike({}, cli())
         })
-        , test("single unflagged arg set in _ property", () => {
+        , test("single unflagged arg set in eggg property", () => {
             const single = cli(['there'])
-            alike({ '_': 'there' }, single)
+            alike({ eggg: 'there' }, single)
         })
-        
+        , test("flag option sets boolean", () => {
+            alike({ v: true }, cli(['-v']))
+            alike({ v: true , s: true, eggg: 'bacccon'}, cli(['-v','bacccon', '-s']))
+        })
+        , test_err("empty dash throws error", () => {
+            cli(['-'])
+        })
+
     ]
 }
