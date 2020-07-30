@@ -1,11 +1,14 @@
 {
   "name": "clia",
-  "version": "2020.7.30",
+  "version": "2020.7.31",
   "description": "Command line parser and t3st example project",
   "main": "index.js",
   "scripts": {
     "test": "npx t3st"
   },
+  "files": [
+    "index.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/devmachiine/clia.git"
