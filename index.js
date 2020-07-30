@@ -17,7 +17,7 @@ const parse_arg = (arg, opts) => {
             .reduce((acc, next) => ({ ...acc, ...next }), {})
     } else {
         // unflagged option
-        return { 'eggg': arg }
+        return { 'clia': arg }
     }
     return 0
 }
@@ -26,7 +26,7 @@ const combine_options = (opts) =>
     opts.reduce((acc, next) => {
         const parsed = parse_arg(next, acc)
 
-        if (has(parsed, 'eggg') && has(acc, 'eggg'))
+        if (has(parsed, 'clia') && has(acc, 'clia'))
             throw Error(`unflagged option [${arg}] previously set with: [${opts}]`)
 
         return { ...parsed, ...acc }

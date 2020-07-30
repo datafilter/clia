@@ -1,5 +1,5 @@
 {
-  "name": "eggg",
+  "name": "clia",
   "version": "2020.7.30",
   "description": "Command line parser and t3st example project",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devmachiine/eggg.git"
+    "url": "git+https://github.com/devmachiine/clia.git"
   },
   "keywords": [
     "cli",
@@ -20,9 +20,9 @@
   "author": "devmachiine",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/devmachiine/eggg/issues"
+    "url": "https://github.com/devmachiine/clia/issues"
   },
-  "homepage": "https://github.com/devmachiine/eggg#readme",
+  "homepage": "https://github.com/devmachiine/clia#readme",
   "devDependencies": {
     "t3st": "^2020.7.29"
   }
