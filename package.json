@@ -1,0 +1,29 @@
+{
+  "name": "eggg",
+  "version": "2020.7.30",
+  "description": "Command line parser and t3st example project",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx t3st"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devmachiine/eggg.git"
+  },
+  "keywords": [
+    "cli",
+    "parser",
+    "t3st",
+    "testing",
+    "test"
+  ],
+  "author": "devmachiine",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/devmachiine/eggg/issues"
+  },
+  "homepage": "https://github.com/devmachiine/eggg#readme",
+  "devDependencies": {
+    "t3st": "^2020.7.29"
+  }
+}
