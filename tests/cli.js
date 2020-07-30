@@ -43,6 +43,10 @@ module.exports = async ({ test, assert, affirm, alike }) => {
         , test_err("empty dash throws error", () => {
             cli(['-'])
         })
+        , test_err("empty double dash throws error", () => {
+            // TODO posix/gnu behaviour here intead.
+            cli(['--'])
+        })
 
     ]
 }
