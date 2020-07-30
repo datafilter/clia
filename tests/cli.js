@@ -13,10 +13,8 @@ module.exports = async ({ test, assert, affirm, alike }) => {
                     throw Error("didn't throw error as expected")
             }
         })
-
-        , test("assert compares values with ===", () => {
-            const five = 2 + 3
-            assert(5, five)
+        , test("no args return empty object", () => {
+            alike({}, cli())
         })
     ]
 }
