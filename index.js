@@ -11,7 +11,10 @@ const parse_arg = (arg, opts) => {
         const flag = arg.slice(1)
         if (flag === '')
             throw Error('Option - given without key. Expected extra character, eg: -h -v ..etc')
-        else return { [flag]: true }
+        else return flag
+            .split('')
+            .map(o => ({ [o]: true }))
+            .reduce((acc, next) => ({ ...acc, ...next }), {})
     } else {
         // unflagged option
         return { 'eggg': arg }

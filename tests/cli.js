@@ -35,7 +35,9 @@ module.exports = async ({ test, assert, affirm, alike }) => {
         })
         , test("flag option sets boolean", () => {
             alike({ v: true }, cli(['-v']))
-            alike({ v: true , s: true, eggg: 'bacccon'}, cli(['-v','bacccon', '-s']))
+            alike({ v: true, w: true }, cli(['-vw']))
+            alike({ a: true, b: true, c: true }, cli(['-ab', '-b', '-c']))
+            alike({ v: true, s: true, eggg: 'bacccon' }, cli(['-v', 'bacccon', '-s']))
         })
         , test_err("empty dash throws error", () => {
             cli(['-'])
