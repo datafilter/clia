@@ -33,7 +33,7 @@ module.exports = async ({ test, assert, affirm, alike }) => {
             const single = cli(['there'])
             alike({ clia: 'there' }, single)
         })
-        , test("flag option sets boolean", () => {
+        , test("letter flag option sets boolean", () => {
             alike({ v: true }, cli(['-v']))
             alike({ v: true, w: true }, cli(['-vw']))
             alike({ a: true, b: true, c: true }, cli(['-ab', '-b', '-c']))
@@ -46,6 +46,10 @@ module.exports = async ({ test, assert, affirm, alike }) => {
         , test_err("empty double dash throws error", () => {
             // TODO posix/gnu behaviour here intead.
             cli(['--'])
+        })
+        , test("word flag sets boolean", () => {
+            alike({ verbose: true }, cli(['--verbose']))
+            alike({ apple: true, banana: true, c: true, d: true }, cli(['--banana','--apple','--c','-d']))
         })
 
     ]

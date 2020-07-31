@@ -9,6 +9,7 @@ const parse_arg = (arg, opts) => {
         const flag = arg.slice(2)
         if (flag === '')
             throw Error('Option - given without key. Expected extra character, eg: -h -v ..etc')
+        else return { [flag]: true }
     } else if (arg.startsWith('-')) {
         // get bool flags
         const flag = arg.slice(1)
