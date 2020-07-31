@@ -4,7 +4,8 @@
   "description": "Command line parser and t3st example project",
   "main": "index.js",
   "scripts": {
-    "test": "npx t3st"
+    "test": "npx t3st",
+    "start": "nodemon -x 'clear; npx t3st'"
   },
   "files": [
     "index.js"

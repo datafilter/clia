@@ -36,8 +36,17 @@ opts === {
 
 ## testing
 
+Clone and run tests:
+
 ```bash
 git clone https://github.com/devmachiine/clia.git
 cd clia
+npm i # optional
 npm test
+```
+
+To run live aka hot-reload tests:
+```bash
+# ctrl+c to exit.
+npm start 
 ```

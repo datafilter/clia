@@ -8,9 +8,16 @@ const parse_arg = (arg, opts) => {
         // single flag OR long value
         const flag = arg.slice(2)
         if (flag === '')
-            throw Error('Option - given without key. Expected extra character, eg: -h -v ..etc')
+            throw Error('Option given without key. Expected extra character, eg: -h -v ..etc')
+        else if (flag.includes('=')) {
+            const [option, value] = flag.split('=')
+            if (option === '' || value === '')
+                throw Error(`Option key or value has length of 0 (${arg}). Expected at least one, eg: --pet=cat`)
+            else return { [option]: value }
+        }
         else return { [flag]: true }
-    } else if (arg.startsWith('-')) {
+    }
+    else if (arg.startsWith('-')) {
         // get bool flags
         const flag = arg.slice(1)
         if (flag === '')
@@ -23,7 +30,6 @@ const parse_arg = (arg, opts) => {
         // unflagged option
         return { 'clia': arg }
     }
-    return 0
 }
 
 const combine_options = (opts) =>
@@ -33,7 +39,7 @@ const combine_options = (opts) =>
         if (has(parsed, 'clia') && has(acc, 'clia'))
             throw Error(`unflagged option [${arg}] previously set with: [${opts}]`)
 
-        return { ...parsed, ...acc }
+        return { ...acc, ...parsed }
     }, {})
 
 // let flags = []

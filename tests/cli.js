@@ -9,7 +9,7 @@ module.exports = async ({ test, assert, affirm, alike }) => {
             throw not_thrown
         } catch (err) {
             if (err === not_thrown)
-                throw Error("didn't throw error as expected")
+                throw Error("did not throw expected error")
             else return err
         }
     }
@@ -38,7 +38,7 @@ module.exports = async ({ test, assert, affirm, alike }) => {
             alike({ v: true, w: true }, cli(['-vw']))
             alike({ a: true, b: true, c: true }, cli(['-ab', '-b', '-c']))
             alike({ a: true, '-': true, '_': true }, cli(['-a-_']))
-            alike({ v: true, s: true, clia: 'bacccon' }, cli(['-v', 'bacccon', '-s']))
+            alike({ v: true, s: true, clia: 'lemon' }, cli(['-v', 'lemon', '-s']))
         })
         , test_err("empty dash throws error", () => {
             cli(['-'])
@@ -49,7 +49,24 @@ module.exports = async ({ test, assert, affirm, alike }) => {
         })
         , test("word flag sets boolean", () => {
             alike({ verbose: true }, cli(['--verbose']))
-            alike({ apple: true, banana: true, c: true, d: true }, cli(['--banana','--apple','--c','-d']))
+            alike({ apple: true, banana: true, c: true, d: true }, cli(['--banana', '--apple', '--c', '-d']))
+        })
+        , test_err("empty key with word flag throws error", () => {
+            cli(['--=val'])
+        })
+        , test_err("empty value with word flag throws error", () => {
+            cli(['--opt='])
+        })
+        , test("word flag with equals sets string", () => {
+            alike({ opt: 'some' }, cli(['--opt=some']))
+        })
+
+        // TODO document in readme
+        , test("last option overrides previous options", () => {
+            alike({ rover: true }, cli(['--rover=some', '--rover']))
+        })
+        , test("last flag overrides previous flags", () => {
+            alike({ a: true, b: true }, cli(['-ab', '--a=false', '-a']))
         })
 
     ]
