@@ -82,16 +82,16 @@ module.exports = async ({ test, assert, affirm, alike }) => {
             alike(cli(['--shape=square', '--shape=triangle']), { $$: [], $shape: 'triangle' })
         })
         , test("tag only created from single flags", () => {
-            alike(cli(['-ab', 'uno', '--dos', 'tres', 'quadro']), {
-                $$: ['uno', 'tres', 'quadro'],
+            alike(cli(['-ab', 'uno', '--dos', 'tres', 'cuatro']), {
+                $$: ['uno', 'tres', 'cuatro'],
                 // TODO make output similar in long optoin and tagged option?
                 // pro: similarity, con: user always has to .[0]
                 // --val=thing  -> $val:'thing'
                 // -val thing   -> $val:['thing']
                 //   maybe both:, also consider using proxy instead of all $properties.
                 // $dos: 'tres',
-                // $$dos: ['tres', 'quadro'],
-                $dos: ['tres', 'quadro'],
+                // $$dos: ['tres', 'cuatro'],
+                $dos: ['tres', 'cuatro'],
                 a: true,
                 b: true,
                 dos: true
