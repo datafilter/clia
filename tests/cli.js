@@ -38,7 +38,11 @@ module.exports = async ({ test, assert, affirm, alike }) => {
             alike(cli(['-vw']), { $$: [], v: true, w: true })
             alike(cli(['-ab', '-b', '-c']), { $$: [], a: true, b: true, c: true })
             alike(cli(['-a-_']), { $$: [], a: true, '-': true, '_': true })
-            alike(cli(['-v', 'lemon', '-s']), { $$: ['lemon'], v: true, s: true })
+            alike(cli(['-v', 'lemon', '-s']), {
+                $$: ['lemon'],
+                $v: ['lemon'],
+                v: true, s: true
+            })
         })
         , test_err("empty dash throws error", () => {
             cli(['-'])
@@ -49,7 +53,10 @@ module.exports = async ({ test, assert, affirm, alike }) => {
         })
         , test("word flag sets boolean", () => {
             alike(cli(['--verbose']), { $$: [], verbose: true })
-            alike(cli(['--banana', '--apple', '--c', '-d']), { $$: [], apple: true, banana: true, c: true, d: true })
+            alike(cli(['--banana', '--apple', '--c', '-d']), {
+                $$: [],
+                apple: true, banana: true, c: true, d: true
+            })
         })
         , test_err("empty key with word flag throws error", () => {
             cli(['--=val'])
@@ -58,11 +65,37 @@ module.exports = async ({ test, assert, affirm, alike }) => {
             cli(['--opt='])
         })
         , test("word flag with equals sets string", () => {
-            alike(cli(['--opt=some']), { $$: [], opt: 'some' })
+            alike(cli(['--opt=some']), { $$: [], $opt: 'some' })
         })
-        , test("last option/flag overrides previous options/flags", () => {
-            alike(cli(['--rover=some', '--rover']), { $$: [], rover: true })
-            alike(cli(['--rover', '--rover=mars']), { $$: [], rover: 'mars' })
+        , test("post flag word arguments sets $value", () => {
+            alike(cli(['a', '-o', 'b', 'c']), {
+                $$: ['a', 'b', 'c'],
+                $o: ['b', 'c'],
+                o: true
+            })
+        })
+        , test("words and flags set different options: { $word:word, flag:true }", () => {
+            alike(cli(['--rover=some', '--rover']), { $$: [], $rover: 'some', rover: true })
+            alike(cli(['--rover', '--rover=mars']), { $$: [], $rover: 'mars', rover: true })
+        })
+        , test("long option overrides previous option", () => {
+            alike(cli(['--shape=square', '--shape=triangle']), { $$: [], $shape: 'triangle' })
+        })
+        , test("tag only created from single flags", () => {
+            alike(cli(['-ab', 'uno', '--dos', 'tres', 'quadro']), {
+                $$: ['uno', 'tres', 'quadro'],
+                // TODO make output similar in long optoin and tagged option?
+                // pro: similarity, con: user always has to .[0]
+                // --val=thing  -> $val:'thing'
+                // -val thing   -> $val:['thing']
+                //   maybe both:, also consider using proxy instead of all $properties.
+                // $dos: 'tres',
+                // $$dos: ['tres', 'quadro'],
+                $dos: ['tres', 'quadro'],
+                a: true,
+                b: true,
+                dos: true
+            })
         })
 
     ]

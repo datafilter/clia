@@ -1,6 +1,6 @@
 const has = (a, prop) => Object.prototype.hasOwnProperty.call(a, prop)
 
-const parse_arg = (arg, opts) => {
+const parse_arg = (arg) => {
     if (arg.includes('__proto__'))
         throw Error('__proto__ not allowed as an argument to prevent prototype pollution.')
 
@@ -13,7 +13,11 @@ const parse_arg = (arg, opts) => {
             const [option, value] = flag.split('=')
             if (option === '' || value === '')
                 throw Error(`Option key or value has length of 0 (${arg}). Expected at least one, eg: --pet=cat`)
-            else return { [option]: value }
+            else {
+                const obj = {}
+                obj['$' + option] = value
+                return obj
+            }
         }
         else return { [flag]: true }
     }
@@ -34,17 +38,37 @@ const parse_arg = (arg, opts) => {
 
 const combine_options = (opts) =>
     opts.reduce((acc, next) => {
-        const parsed = parse_arg(next, acc)
+        const parsed = parse_arg(next)
 
-        if (has(parsed, '$$') && has(acc, '$$')) {
-            acc.$$.push(parsed.$$[0])
+        if (has(parsed, '$$')) {
+            const word = parsed.$$[0]
+            // add word to $$
+            acc.opts.$$.push(word)
+
+            // add word to $flag []
+            if (acc.tag) {
+                const prop = '$' + acc.tag
+                if (!acc.opts[prop])
+                    acc.opts[prop] = [word]
+                else acc.opts[prop].push(word)
+            }
+
             return acc
         }
-        else return { ...acc, ...parsed }
-    }, { $$: []})
+        else {
+            const keys = Object.keys(parsed)
+            const tag = (keys.length === 1 && parsed[keys[0]] === true)
+                ? keys[0]
+                : acc.tag
 
-// let flags = []
-// let options = []
-// let rest = []
+            return {
+                opts: { ...acc.opts, ...parsed },
+                tag
+            }
+        }
+    }, {
+        opts: { $$: [] },
+        tag: undefined
+    })
 
-module.exports = (args = []) => combine_options(args)
+module.exports = (args = []) => combine_options(args).opts
