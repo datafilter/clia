@@ -24,21 +24,21 @@ module.exports = async ({ test, assert, affirm, alike }) => {
             cli([, , '__proto__'])
         })
         , test("no args return empty object", () => {
-            alike({ $$: [] }, cli())
+            alike(cli(), { $$: [] })
+            alike(cli([, , ,]), { $$: [] })
         })
         , test("single unflagged arg set in $$ property", () => {
-            const single = cli(['there'])
-            alike({ $$: ['there'] }, single)
+            alike(cli(['there']), { $$: ['there'] })
         })
         , test("multiple unflagged args set in $$ property", () => {
-            alike({ $$: ['one', 'two', 'three'] }, cli(['one', 'two', 'three']))
+            alike(cli(['one', 'two', 'three']), { $$: ['one', 'two', 'three'] })
         })
         , test("letter flag option sets boolean", () => {
-            alike({ $$: [], v: true }, cli(['-v']))
-            alike({ $$: [], v: true, w: true }, cli(['-vw']))
-            alike({ $$: [], a: true, b: true, c: true }, cli(['-ab', '-b', '-c']))
-            alike({ $$: [], a: true, '-': true, '_': true }, cli(['-a-_']))
-            alike({ $$: ['lemon'], v: true, s: true }, cli(['-v', 'lemon', '-s']))
+            alike(cli(['-v']), { $$: [], v: true })
+            alike(cli(['-vw']), { $$: [], v: true, w: true })
+            alike(cli(['-ab', '-b', '-c']), { $$: [], a: true, b: true, c: true })
+            alike(cli(['-a-_']), { $$: [], a: true, '-': true, '_': true })
+            alike(cli(['-v', 'lemon', '-s']), { $$: ['lemon'], v: true, s: true })
         })
         , test_err("empty dash throws error", () => {
             cli(['-'])
@@ -48,8 +48,8 @@ module.exports = async ({ test, assert, affirm, alike }) => {
             cli(['--'])
         })
         , test("word flag sets boolean", () => {
-            alike({ $$: [], verbose: true }, cli(['--verbose']))
-            alike({ $$: [], apple: true, banana: true, c: true, d: true }, cli(['--banana', '--apple', '--c', '-d']))
+            alike(cli(['--verbose']), { $$: [], verbose: true })
+            alike(cli(['--banana', '--apple', '--c', '-d']), { $$: [], apple: true, banana: true, c: true, d: true })
         })
         , test_err("empty key with word flag throws error", () => {
             cli(['--=val'])
@@ -58,11 +58,11 @@ module.exports = async ({ test, assert, affirm, alike }) => {
             cli(['--opt='])
         })
         , test("word flag with equals sets string", () => {
-            alike({ $$: [], opt: 'some' }, cli(['--opt=some']))
+            alike(cli(['--opt=some']), { $$: [], opt: 'some' })
         })
         , test("last option/flag overrides previous options/flags", () => {
-            alike({ $$: [], rover: true }, cli(['--rover=some', '--rover']))
-            alike({ $$: [], rover: 'mars' }, cli(['--rover', '--rover=mars']))
+            alike(cli(['--rover=some', '--rover']), { $$: [], rover: true })
+            alike(cli(['--rover', '--rover=mars']), { $$: [], rover: 'mars' })
         })
 
     ]
