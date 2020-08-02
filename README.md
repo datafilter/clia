@@ -24,7 +24,7 @@ opts === {
     b: true,
     c: true,
     d: true
-    $arr: ['hello']
+    $$: ['hello']
 }
 ```
 

@@ -28,7 +28,7 @@ const parse_arg = (arg, opts) => {
             .reduce((acc, next) => ({ ...acc, ...next }), {})
     } else {
         // unflagged option
-        return { '$arr': [arg] }
+        return { '$$': [arg] }
     }
 }
 
@@ -36,12 +36,12 @@ const combine_options = (opts) =>
     opts.reduce((acc, next) => {
         const parsed = parse_arg(next, acc)
 
-        if (has(parsed, '$arr') && has(acc, '$arr')) {
-            acc.$arr.push(parsed.$arr[0])
+        if (has(parsed, '$$') && has(acc, '$$')) {
+            acc.$$.push(parsed.$$[0])
             return acc
         }
         else return { ...acc, ...parsed }
-    }, {})
+    }, { $$: []})
 
 // let flags = []
 // let options = []
