@@ -29,9 +29,17 @@ module.exports = async ({ test, assert, affirm, alike }) => {
         })
         , test("single unflagged arg set in $$ property", () => {
             alike(cli(['there']), { $$: ['there'] })
+            alike(cli(['$']), { $$: ['$'] })
         })
         , test("multiple unflagged args set in $$ property", () => {
-            alike(cli(['one', 'two', 'three']), { $$: ['one', 'two', 'three'] })
+            alike(cli(['one', 'two', 'three', '$four', '$$five', '$$$ix']),
+                { $$: ['one', 'two', 'three', '$four', '$$five', '$$$ix'] })
+        })
+        , test_err("letter flag cannot start with -$", () => {
+            cli(['-$invalid'])
+        })
+        , test_err("word flag cannot start with --$", () => {
+            cli(['--$invalid'])
         })
         , test("letter flag option sets boolean", () => {
             alike(cli(['-v']), { $$: [], v: true })

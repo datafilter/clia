@@ -2,7 +2,9 @@ const has = (a, prop) => Object.prototype.hasOwnProperty.call(a, prop)
 
 const parse_arg = (arg) => {
     if (arg.includes('__proto__'))
-        throw Error('__proto__ not allowed as an argument to prevent prototype pollution.')
+        throw Error('__proto__ not allowed within an argument to prevent prototype pollution.')
+    if (arg.startsWith('-$') || arg.startsWith('--$'))
+        throw Error(`invalid arg: ${arg}\nflags cannot start with -$ or --$`)
 
     if (arg.startsWith('--')) {
         // single flag OR long value
