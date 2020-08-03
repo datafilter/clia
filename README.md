@@ -28,21 +28,35 @@ opts === {
 }
 ```
 
+## terms - options and arguments
+
+* option: boolean flag(s)
+    * short option: starts with single `-`, refers to one or more options
+    * long option: starts with double `--`, refers to one option
+    * key-value option: the `key` in `--key=value`
+* argument: word without `-` or `--`, or on the rhs of long option equals sign `=`
+    * untagged: argument(s) preceding any options
+    * tagged: argument(s) succeeding the last short option or long option
+    * key-value argument: the `value` in `--key=value`
+
+```
+cli a -b c --d --e=f
+a: argument (untagged argument)
+b: option (short option)
+c: argument (tagged argument)
+d: option (long option)
+e: option (key-value option)
+f: argument (option argument)
+```
+
 ## parsing
 
- * When an option is stated more than once, the last value is used
-
- ```javascript
-test("last option/flag overrides previous options/flags", () => {
-    alike({ rover: true }, cli(['--rover=some', '--rover']))
-    alike({ rover: 'mars' }, cli(['--rover', '--rover=mars']))
-})
-```
+ * When a key-value option is stated more than once, the last value is used assigned
 
 ## errors are thrown for:
 
 * `__proto__`  to prevent prototype pollution
-* dangling `-` or `--` arguments
+* dangling `-` or `--` arguments (WIP `-` will become argument and `--` will indicate all subsequent input to be treated as arguments)
 
 ## testing
 
@@ -52,10 +66,11 @@ Clone and run tests:
 git clone https://github.com/devmachiine/clia.git
 cd clia
 npm i # optional
+npm i -g nodemon # optional
 npm test
 ```
 
-To run live aka hot-reload tests:
+To run live _(aka hot-reload)_ tests:
 ```bash
 # ctrl+c to exit.
 npm start 
@@ -64,4 +79,7 @@ npm start
 ## references
 
 [The Art of Unix Programming](http://www.catb.org/~esr/writings/taoup/html/ch10s05.html)
+
 [GNU argument syntax conventions](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html)
+
+[getopts](https://github.com/jorgebucaran/getopts#readme) (therefore [this IEEE doc](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02))
