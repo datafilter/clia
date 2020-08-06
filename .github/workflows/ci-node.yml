@@ -37,10 +37,17 @@ jobs:
     needs: [lint, test]
     runs-on: ubuntu-latest # any nodejs will do
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
+    # Setup .npmrc file to publish to npm
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+        registry-url: 'https://registry.npmjs.org'
 #     - run: mv .npmrc.ignore .npmrc
-    - run: npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+#     - run: npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
 #     - run: (node .github/scripts/npm-version-diff.js && npm publish --access public) || echo did not publish
+    - run: npm i
     - run: (node .github/scripts/npm-version-diff.js && npm publish) || echo did not publish
       env:
-        NPM_TOKEN: $${{ secrets.NPM_TOKEN }}
+#         NPM_TOKEN: $${{ secrets.NPM_TOKEN }}
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
