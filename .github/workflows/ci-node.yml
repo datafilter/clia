@@ -38,4 +38,6 @@ jobs:
     runs-on: ubuntu-latest # any nodejs will do
     steps:
     - uses: actions/checkout@v1
-    - run: (node .github/scripts/npm-version-diff.js && echo yes publish) || echo no dont publish
+    - run: (node .github/scripts/npm-version-diff.js && npm publish) || echo did not publish
+      env:
+        NPM_TOKEN: $${{ secrets.NPM_TOKEN }}
