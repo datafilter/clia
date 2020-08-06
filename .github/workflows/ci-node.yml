@@ -38,7 +38,9 @@ jobs:
     runs-on: ubuntu-latest # any nodejs will do
     steps:
     - uses: actions/checkout@v1
-    - run: mv .npmrc.ignore .npmrc
-    - run: (node .github/scripts/npm-version-diff.js && npm publish --access public) || echo did not publish
+#     - run: mv .npmrc.ignore .npmrc
+    - run: npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
+#     - run: (node .github/scripts/npm-version-diff.js && npm publish --access public) || echo did not publish
+    - run: (node .github/scripts/npm-version-diff.js && npm publish) || echo did not publish
       env:
         NPM_TOKEN: $${{ secrets.NPM_TOKEN }}
