@@ -30,27 +30,35 @@ opts === {
 
 ## parlance - options and arguments
 
-### option: boolean flag(s)
-
-* **short** option: starts with single `-`, refers to one or more options
-* **long** option: starts with double `--`, refers to one option
-* **key-value** option: the `key` in `--key=value`
-
-### argument: text without `-` or `--`, or on the rhs after a key-value `=`
-
-* **untagged**: argument(s) preceding any options
-* **tagged**: argument(s) succeeding the last short option or long option
-* **key-value** argument: the `value` in `--key=value`
-
 ```
 cli a -b c --d --e=f
-a: argument (untagged argument)
-b: option (short option)
-c: argument (tagged argument)
-d: option (long option)
-e: option (key-value option)
-f: argument (option argument)
+a: argument (untagged)
+b: option (short)
+c: argument (tagged)
+d: option (long)
+e: option (key-value)
+f: argument (key-value)
 ```
+
+## option -> boolean flag(s)
+
+* **short** option
+  * starts with single `-`
+  * refers to one or more options
+* **long** option
+  * starts with double `--`
+  * refers to one option
+* **key-value** option
+  * the `key` in `--key=value`
+
+### argument -> character(s)
+
+* **untagged**: 
+  * argument(s) preceding any options
+* **tagged**
+  * argument(s) succeeding the last short option or long option
+* **key-value** argument
+  * the `value` in `--key=value`
 
 ## parsing
 

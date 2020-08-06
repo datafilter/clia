@@ -28,6 +28,6 @@
   },
   "homepage": "https://github.com/devmachiine/clia#readme",
   "devDependencies": {
-    "t3st": "^2020.7.29"
+    "t3st": "^2020.8.6"
   }
 }

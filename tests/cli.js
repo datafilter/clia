@@ -52,8 +52,8 @@ module.exports = async ({ test, assert, affirm, alike }) => {
                 v: true, s: true
             })
         })
-        , test_err("empty dash throws error", () => {
-            cli(['-'])
+        , test("single dash is argument", () => {
+            alike(cli(['-']), { $$: ['-'] })
         })
         , test_err("empty double dash throws error", () => {
             // TODO posix/gnu behaviour here intead.
@@ -92,13 +92,6 @@ module.exports = async ({ test, assert, affirm, alike }) => {
         , test("tag only created from single flags", () => {
             alike(cli(['-ab', 'uno', '--dos', 'tres', 'cuatro']), {
                 $$: ['uno', 'tres', 'cuatro'],
-                // TODO make output similar in long optoin and tagged option?
-                // pro: similarity, con: user always has to .[0]
-                // --val=thing  -> $val:'thing'
-                // -val thing   -> $val:['thing']
-                //   maybe both:, also consider using proxy instead of all $properties.
-                // $dos: 'tres',
-                // $$dos: ['tres', 'cuatro'],
                 $dos: ['tres', 'cuatro'],
                 a: true,
                 b: true,
