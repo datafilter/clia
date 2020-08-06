@@ -18,10 +18,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [ubuntu-latest]
-        os: [macos-latest, ubuntu-latest, windows-latest]
-        # node-version: [12.x]
-        node-version: [12.x, 14.x]
+        os: [ubuntu-latest]
+#         os: [macos-latest, ubuntu-latest, windows-latest]
+        node-version: [12.x]
+#         node-version: [12.x, 14.x]
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -39,6 +39,6 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - run: mv .npmrc.ignore .npmrc
-    - run: (node .github/scripts/npm-version-diff.js && npm publish) || echo did not publish
+    - run: (node .github/scripts/npm-version-diff.js && npm publish --access public) || echo did not publish
       env:
         NPM_TOKEN: $${{ secrets.NPM_TOKEN }}
