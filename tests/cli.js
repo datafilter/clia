@@ -1,4 +1,4 @@
-module.exports = async ({ test, assert, affirm, alike }) => {
+module.exports = async ({ test, alike }) => {
 
     const cli = require('../index')
 
@@ -21,11 +21,10 @@ module.exports = async ({ test, assert, affirm, alike }) => {
 
     return [
         test_err("doesn't allow prototype pollution", () => {
-            cli([, , '__proto__'])
+            cli(['__proto__'])
         })
         , test("no args return empty object", () => {
             alike(cli(), { $$: [] })
-            alike(cli([, , ,]), { $$: [] })
         })
         , test("single unflagged arg set in $$ property", () => {
             alike(cli(['there']), { $$: ['there'] })
