@@ -1,0 +1,3 @@
+//registry.npmjs.org/:_authToken=${NPM_TOKEN}
+; this file is renamed to .npmrc right before publish
+; otherwise npm run lint and npm test also require the token for no reason.
