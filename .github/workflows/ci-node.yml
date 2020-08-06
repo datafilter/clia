@@ -1,13 +1,11 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: CI
+name: CI/CD
 
 on:
   push:
     branches: [ master ]
-  # pull_request:
-  #   branches: [ master ]
 jobs:
   lint:
     runs-on: ubuntu-latest # any nodejs will do
@@ -18,10 +16,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
-#         os: [macos-latest, ubuntu-latest, windows-latest]
-        node-version: [12.x]
-#         node-version: [12.x, 14.x]
+        # os: [ubuntu-latest]
+        os: [macos-latest, ubuntu-latest, windows-latest]
+        # node-version: [12.x]
+        node-version: [12.x, 14.x]
     steps:
     - uses: actions/checkout@v2
     - name: Use Node.js ${{ matrix.node-version }}
@@ -35,7 +33,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   publish:
     needs: [lint, test]
-    runs-on: ubuntu-latest # any nodejs will do
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     # Setup .npmrc file to publish to npm
@@ -43,11 +41,8 @@ jobs:
       with:
         node-version: '12.x'
         registry-url: 'https://registry.npmjs.org'
-#     - run: mv .npmrc.ignore .npmrc
-#     - run: npm config set //registry.npmjs.org/:_authToken=$NPM_TOKEN
-#     - run: (node .github/scripts/npm-version-diff.js && npm publish --access public) || echo did not publish
-    - run: npm i
+    - run: npm i # todo remove?
     - run: (node .github/scripts/npm-version-diff.js && npm publish) || echo did not publish
       env:
-#         NPM_TOKEN: $${{ secrets.NPM_TOKEN }}
+        # https://docs.github.com/en/actions/language-and-framework-guides/publishing-nodejs-packages
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
