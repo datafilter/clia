@@ -67,7 +67,7 @@ f: argument (key-value)
 ## errors are thrown for:
 
 * `__proto__`  to prevent prototype pollution
-* dangling `-` or `--` arguments (WIP `-` will become argument and `--` will indicate all subsequent input to be treated as arguments)
+* dangling `--` argument (WIP `--` will indicate all subsequent input to be treated as arguments)
 
 ## testing
 
@@ -94,3 +94,13 @@ npm start
 [GNU argument syntax conventions](https://www.gnu.org/software/libc/manual/html_node/Argument-Syntax.html)
 
 [getopts](https://github.com/jorgebucaran/getopts#readme) (therefore [this IEEE doc](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html#tag_12_02))
+
+![CI](https://github.com/devmachiine/clia/workflows/CI/badge.svg)
+
+[![License](https://img.shields.io/badge/license-MIT-black)](https://img.shields.io/badge/license-MIT-black)
+
+<!-- Todo Metrics
+[![Snyk](https://img.shields.io/npm/t3st/two.svg)](https://npmjs.com/two)
+[![Coverage](https://img.shields.io/npm/t3st/four.svg)](https://npmjs.com/four)
+[![OtherMetric](https://img.shields.io/npm/t3st/one.svg)](https://npmjs.com/one)
+-->

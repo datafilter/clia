@@ -1,4 +1,4 @@
-module.exports = async ({ test, alike }) => {
+module.exports = async ({ test, affirm, alike }) => {
 
     const cli = require('../index')
 
@@ -34,11 +34,13 @@ module.exports = async ({ test, alike }) => {
             alike(cli(['one', 'two', 'three', '$four', '$$five', '$$$ix']),
                 { $$: ['one', 'two', 'three', '$four', '$$five', '$$$ix'] })
         })
-        , test_err("letter flag cannot start with -$", () => {
-            cli(['-$invalid'])
+        , test("letter flag can start with -$", () => {
+            alike(cli(['-$']), { $$: {}, $: true })
+            alike(cli(['-$ab']), { $$: {}, $: true, a: true, b: true })
         })
-        , test_err("word flag cannot start with --$", () => {
-            cli(['--$invalid'])
+        , test("word flag can start with --$", () => {
+            alike(cli(['--$']), { $$: {}, $: true })
+            alike(cli(['--$a']), { $$: {}, $a: true })
         })
         , test("letter flag option sets boolean", () => {
             alike(cli(['-v']), { $$: [], v: true })
@@ -57,6 +59,8 @@ module.exports = async ({ test, alike }) => {
         , test_err("empty double dash throws error", () => {
             // TODO posix/gnu behaviour here intead.
             cli(['--'])
+        }, err => {
+            affirm(err.message, m => m.startsWith('-- not supported yet.'))
         })
         , test("word flag sets boolean", () => {
             alike(cli(['--verbose']), { $$: [], verbose: true })

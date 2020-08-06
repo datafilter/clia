@@ -2,14 +2,12 @@
 const parse_arg = (arg) => {
     if (arg.includes('__proto__'))
         throw Error('__proto__ not allowed within an argument to prevent prototype pollution.')
-    if (arg.startsWith('-$') || arg.startsWith('--$'))
-        throw Error(`invalid arg: ${arg}\nflags cannot start with -$ or --$`)
 
     if (arg.startsWith('--')) {
         // single option OR key-value
         const flag = arg.slice(2)
         if (flag === '')
-            throw Error('Option given without key. Expected extra character, eg: -h -v ..etc')
+            throw Error('-- not supported yet. Expected extra character, eg: --h --v ..etc')
         else if (flag.includes('=')) {
             const [option, value] = flag.split('=')
             if (option === '' || value === '')
