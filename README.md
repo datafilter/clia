@@ -14,17 +14,16 @@ const opts = clia(process.argv.slice(2))
 
 From the command line input:
 ```bash
-node your-node-app -a -ab -cd hello
+node your-node-app hello -a -ab -d world
 ```
 
 Yields
 ```js
-opts === {
-    a: true,
-    b: true,
-    c: true,
-    d: true
-    $$: ['hello']
+{
+  arg: { d: 'world' },
+  args: { d: [ 'world' ] },
+  opt: { a: true, b: true, d: true },
+  plain: [ 'hello' ]
 }
 ```
 
@@ -62,10 +61,15 @@ f: argument (key-value)
 
 ## parsing
 
- * When a key-value option is stated more than once, the last value is used assigned
- * If a `--` is encountered, it is ignored. All subsequent inputs are treated as arguments.
+* If a `--` is encountered, it is ignored. All subsequent inputs are treated as arguments.
 
-## errors are thrown for:
+## output
+
+* When a key-value option is stated more than once, all values are saved under `args`.
+
+* The `arg` object returns the first `args` if there are any
+
+## edge cases
 
 * `__proto__`  to prevent prototype pollution
 * key-value pair with missing value, eg: `--store=`

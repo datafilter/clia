@@ -98,10 +98,34 @@ const combine_options = (opts) =>
         plain: []
     })
 
-module.exports = (args = []) => {
-    const wip = combine_options(args)
+const first_arg = (args) => Object.keys(args).reduce((acc, key) => {
+    const [val] = args[key]
+    const o = { [key]: val }
+    return { ...o, ...acc }
+}, {})
 
-    // add arg proxy to .clia.args
+const copy_alias_values = (result, names) => {
+    names.forEach(name => {
+        const [letter] = name
+        result.args[name] = result.args[name] || result.args[letter]
+        result.opt[name] = result.opt[name] || result.opt[letter]
+    });
+    return result
+}
 
-    return wip.opts
+module.exports = (args = [], alias = []) => {
+    const parsed = combine_options(args)
+
+    const arg = first_arg(parsed.args)
+
+    copy_alias_values(parsed, alias)
+
+    const result = {
+        arg: arg,
+        args: parsed.args,
+        opt: parsed.opt,
+        plain: parsed.plain
+    }
+
+    return result
 }
