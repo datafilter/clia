@@ -1,4 +1,4 @@
-module.exports = async ({ test, affirm, alike }) => {
+module.exports = async ({ test, alike }) => {
 
     const cli = require('../index')
 
