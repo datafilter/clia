@@ -6,6 +6,7 @@
 
 ### 2020.8.7
 
+* **f** Optional alias to options and arguments
 * **f** Save first tagged argument in arg property
 * **f** Save all key value arguments in args property
 * **f** Save all untagged arguments in plain property

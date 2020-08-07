@@ -74,13 +74,17 @@ const first_arg = (args) => Object.keys(args).reduce((acc, key) => {
 const copy_alias_values = (result, names) => {
     names.forEach(name => {
         const [letter] = name
-        result.args[name] = result.args[name] || result.args[letter]
-        result.opt[name] = result.opt[name] || result.opt[letter]
+        const arg_val = result.args[name] || result.args[letter]
+        const opt_val = result.opt[name] || result.opt[letter]
+        if (arg_val)
+            result.args[name] = arg_val
+        if (opt_val)
+            result.opt[name] = opt_val
     });
-    return result
 }
 
 module.exports = (args = [], alias = []) => {
+
     const parsed = combine_options(args)
 
     copy_alias_values(parsed, alias)
