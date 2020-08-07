@@ -12,7 +12,7 @@ const clia = require('clia')
 const opts = clia(process.argv.slice(2))
 ```
 
-From the command line input flags (abcd) and unflagged (hello)
+From the command line input:
 ```bash
 node your-node-app -a -ab -cd hello
 ```
@@ -40,7 +40,7 @@ e: option (key-value)
 f: argument (key-value)
 ```
 
-## option -> boolean flag(s)
+### option -> boolean flag(s)
 
 * **short** option
   * starts with single `-`
@@ -63,11 +63,12 @@ f: argument (key-value)
 ## parsing
 
  * When a key-value option is stated more than once, the last value is used assigned
+ * If a `--` is encountered, it is ignored. All subsequent inputs are treated as arguments.
 
 ## errors are thrown for:
 
 * `__proto__`  to prevent prototype pollution
-* dangling `--` argument (WIP `--` will indicate all subsequent input to be treated as arguments)
+* key-value pair with missing value, eg: `--store=`
 
 ## testing
 

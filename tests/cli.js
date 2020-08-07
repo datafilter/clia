@@ -56,11 +56,13 @@ module.exports = async ({ test, affirm, alike }) => {
         , test("single dash is argument", () => {
             alike(cli(['-']), { $$: ['-'] })
         })
-        , test_err("empty double dash throws error", () => {
-            // TODO posix/gnu behaviour here intead.
-            cli(['--'])
-        }, err => {
-            affirm(err.message, m => m.startsWith('-- not supported yet.'))
+        , test("1st double dash is ignored ", () => {
+            alike(cli(['--']), { $$: [] })
+        })
+        , test("arguments after -- are parsed verbatim", () => {
+            alike(cli(['--', 'a', '-b', '--c', '--d=e']), { $$: ['a', '-b', '--c', '--d=e'] })
+            alike(cli(['--', '$', '--']), { $$: ['$', '--'] })
+            alike(cli(['-a', 'b', '--', '$', '--']), { $$: ['b', '$', '--'], $a: ['b', '$', '--'], a: true })
         })
         , test("word flag sets boolean", () => {
             alike(cli(['--verbose']), { $$: [], verbose: true })

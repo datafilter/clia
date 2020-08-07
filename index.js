@@ -4,11 +4,13 @@ const parse_arg = (arg) => {
         throw Error('__proto__ not allowed within an argument to prevent prototype pollution.')
 
     if (arg.startsWith('--')) {
-        // single option OR key-value
+        if (arg === '--')
+            return ['a', '--']
+
         const flag = arg.slice(2)
-        if (flag === '')
-            throw Error('-- not supported yet. Expected extra character, eg: --h --v ..etc')
-        else if (flag.includes('=')) {
+
+        if (flag.includes('=')) {
+            // key-value
             const [option, value] = flag.split('=')
             if (option === '' || value === '')
                 throw Error(`Option key or value has length of 0 (${arg}). Expected at least one, eg: --pet=cat`)
@@ -16,7 +18,7 @@ const parse_arg = (arg) => {
                 return ['kv', [option, value]]
             }
         }
-        else return ['o', [flag]]
+        else return ['o', [flag]] //single option
     }
     else if (arg.startsWith('-') && arg.length > 1) {
         // options
@@ -36,7 +38,7 @@ const add_args = (obj, key, val) => {
 
 const combine_options = (opts) =>
     opts.reduce((acc, next) => {
-        const [kind, parsed] = parse_arg(next)
+        const [kind, parsed] = acc.skip ? ['a', next] : parse_arg(next)
 
         if (kind === 'o') {
             const options = parsed.map(o => ({ [o]: true })).reduce((acc, next) => ({ ...acc, ...next }), {})
@@ -51,18 +53,22 @@ const combine_options = (opts) =>
 
         } else if (kind === 'a') {
 
-            acc.opts.$$.push(parsed)
+            if (parsed === '--' && !acc.skip) {
+                acc.skip = true
+            } else {
+                acc.opts.$$.push(parsed)
 
-            if (acc.tag) {
-                const prop = '$' + acc.tag
-                if (!acc.opts[prop])
-                    acc.opts[prop] = [parsed]
-                else acc.opts[prop].push(parsed)
+                if (acc.tag) {
+                    const prop = '$' + acc.tag
+                    if (!acc.opts[prop])
+                        acc.opts[prop] = [parsed]
+                    else acc.opts[prop].push(parsed)
+                }
+
+                if (acc.tag) {
+                    add_args(acc, acc.tag, parsed)
+                } else acc.plain.push(parsed)
             }
-
-            if (acc.tag) {
-                add_args(acc, acc.tag, parsed)
-            } else acc.plain.push(parsed)
 
             return acc
 
@@ -86,6 +92,7 @@ const combine_options = (opts) =>
     }, {
         opts: { $$: [] },
         tag: undefined,
+        skip: false,
         opt: {},
         args: {},
         plain: []
