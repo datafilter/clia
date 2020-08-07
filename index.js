@@ -26,18 +26,12 @@ const parse_arg = (arg) => {
     }
 }
 
-const push_args = (obj, key, val) => {
-    if (!obj.args[key])
-        obj.args[key] = [val]
-    else obj.args[key].push(val)
-}
-
 const combine_options = (opts) =>
     opts.reduce((acc, next) => {
+
         const [kind, parsed] = acc.skip ? ['a', next] : parse_arg(next)
 
         if (kind === 'o') {
-
             const options = parsed.map(o => ({ [o]: true })).reduce((acc, next) => ({ ...acc, ...next }), {})
             return {
                 tag: parsed.length == 1 && parsed.find(_ => true) || acc.tag,
@@ -45,27 +39,24 @@ const combine_options = (opts) =>
                 args: acc.args,
                 plain: acc.plain
             }
-        } else if (kind === 'a') {
+        }
 
+        if (kind === 'a') {
             if (parsed === '--' && !acc.skip) {
                 acc.skip = true
             } else if (acc.tag) {
-                push_args(acc, acc.tag, parsed)
+                acc.args[acc.tag] = [...acc.args[acc.tag] || [], parsed]
             }
             else acc.plain.push(parsed)
-
             return acc
+        }
 
-        } else if (kind === 'kv') {
-            
+        if (kind === 'kv') {
             const [k, v] = parsed
-
-            push_args(acc, k, v)
-
+            acc.args[k] = [...acc.args[k] || [], v]
             return acc
-
-        } else throw Error('kind mismatch')
-
+        }
+        else throw Error(`Unhandled combine option ${kind}`)
     }, {
         tag: undefined,
         skip: false,
@@ -92,16 +83,12 @@ const copy_alias_values = (result, names) => {
 module.exports = (args = [], alias = []) => {
     const parsed = combine_options(args)
 
-    const arg = first_arg(parsed.args)
-
     copy_alias_values(parsed, alias)
 
-    const result = {
-        arg: arg,
+    return {
+        arg: first_arg(parsed.args),
         args: parsed.args,
         opt: parsed.opt,
         plain: parsed.plain
     }
-
-    return result
 }
