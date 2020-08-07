@@ -142,6 +142,14 @@ module.exports = async ({ test, alike }) => {
                 plain: []
             })
         })
+        , test("short option saves all key values in args", () => {
+            alike(cli('--shape square triangle'), {
+                arg: { shape: 'square' },
+                args: { shape: ['square', 'triangle'] },
+                opt: { shape: true},
+                plain: []
+            })
+        })
         , test("args only created from single options", () => {
             alike(cli('-ab uno --dos tres cuatro -c si'), {
                 arg: { c: 'si', dos: 'tres' },
