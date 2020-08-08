@@ -28,7 +28,7 @@ conf === {
   // arguments after options are tagged with the last option (eg -d world, or --d world)
   // argument --key=value also saved in args, eg --d=world
   args: { d: [ 'world' ] }, 
-  // the first value of each args property, so that you can use arg.prop[0] instead of args.prop[0]
+  // the first value of each args property, so that you can use arg.prop instead of args.prop[0]
   arg: { d: 'world' }, 
 }
 ```
