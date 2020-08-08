@@ -12,18 +12,19 @@ const parse_arg = (arg) => {
             const [key, value] = option.split('=')
             if (key === '' || value === '')
                 throw Error(`key-value has empty key or value (${arg}). Expected at least one, eg: --pet=cat`)
-            else {
-                return ['kv', [key, value]]
-            }
+
+            return ['kv', [key, value]]
         }
-        else return ['o', [option]]
+
+        return ['o', [option]]
     }
-    else if (arg.startsWith('-') && arg.length > 1) {
+
+    if (arg.startsWith('-') && arg.length > 1) {
         const options = arg.slice(1).split('')
         return ['o', options]
-    } else {
-        return ['a', arg]
     }
+
+    return ['a', arg]
 }
 
 const combine_options = (opts) =>
