@@ -1,6 +1,6 @@
 {
   "name": "clia",
-  "version": "2020.8.8",
+  "version": "2020.8.9",
   "description": "Command line parser and t3st example project",
   "main": "index.js",
   "scripts": {

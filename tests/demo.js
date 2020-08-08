@@ -15,7 +15,6 @@ module.exports = ({ test, alike }) => {
         test("demo alias", () => {
             const example = clia('run -o yaml --d=/usr/bin --fruit=mango'.split(' ')
                 , ['output', 'directory', 'fruit'])
-            console.log(example)
             alike(example, {
                 arg: {
                     o: 'yaml', output: 'yaml',

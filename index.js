@@ -29,7 +29,7 @@ const combine_input = (inputs) =>
     inputs.reduce((acc, next) => {
 
         if (next.includes('__proto__'))
-            throw Error('__proto__ not allowed within an argument to prevent prototype pollution.')
+            throw Error(`__proto__ not allowed within an argument to prevent prototype pollution.`)
 
         const [kind, parsed] = acc.skip ? ['a', next] : parse_arg(next)
 
@@ -42,23 +42,20 @@ const combine_input = (inputs) =>
                 plain: acc.plain
             }
         }
-
-        if (kind === 'a') {
+        else if (kind === 'a') {
             if (parsed === '--' && !acc.skip) {
                 acc.skip = true
             } else if (acc.tag) {
                 acc.args[acc.tag] = [...acc.args[acc.tag] || [], parsed]
             }
             else acc.plain.push(parsed)
-            return acc
         }
-
-        if (kind === 'kv') {
+        else if (kind === 'kv') {
             const [k, v] = parsed
             acc.args[k] = [...acc.args[k] || [], v]
-            return acc
         }
-        else throw Error(`Unhandled combine option ${kind}`)
+
+        return acc
     }, {
         tag: undefined,
         skip: false,
@@ -84,6 +81,9 @@ const copy_alias_values = (parsed, names) => {
 }
 
 module.exports = (args = [], alias = []) => {
+
+    if(!Array.isArray(args) || !Array.isArray(alias))
+        throw Error(`expected input to be array(s). Eg clia(process.argv.slice(2),['alias','names'])`)
 
     const parsed = combine_input(args)
 

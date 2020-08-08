@@ -1,4 +1,4 @@
-module.exports = async ({ test }) => {
+module.exports = async ({ test, affirm }) => {
 
     const clia = require('../index')
 
@@ -33,6 +33,11 @@ module.exports = async ({ test }) => {
         })
         , test_err("empty value key-value throws error", () => {
             cli('--opt=')
+        })
+        , test_err("non array input(s) throws error", () => {
+            clia('fails.. todo, accept string as input?')
+        }, err => {
+            affirm(err.message, e => e.includes('expected input to be array') )
         })
     ]
 }

@@ -1,3 +1,8 @@
+### 2020.8.9
+
+* remove unhandled kind throw
+* improved error for unexpected input
+
 ### 2020.8.8
 
 * throw on __proto__ argument even after `--`
