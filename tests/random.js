@@ -13,17 +13,16 @@ module.exports = ({ test }) => {
 
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         + 'abcdefghijklmnopqrstuvwxyz0123456789'
-        + '=   =   =   =  =   =   =   =   =   ='
-        + '- - - - - - - - - - - - - - - - - - '
+        + '-=--=--=--=--=--=--=--=--=--=--=--=-'
         + `~!@#$%^&*()_+{}:"<>?,./;'[]-=\``
+
+    const invalid_input = () => [`__proto__`, ` --=no-key`, ` --no-value=`][Math.floor(Math.random() * 3)]
 
     return [...Array(100).keys()].map(_ =>
         test("test random input only throws expected errors", () => {
 
-            const random_input = shuffleArray(characters.split('')).join('')
-                + (Math.random() * 100 > 95 ? '__proto__' : '')
-                + (Math.random() * 100 > 95 ? '--no-value=' : '')
-                + (Math.random() * 100 > 95 ? '--=no-key' : '')
+            const random_input = shuffleArray(characters.split('')).join(' ')
+                + (Math.random() * 100 > 80 ? invalid_input() : '')
 
             try {
                 clia(random_input.split(' '))
