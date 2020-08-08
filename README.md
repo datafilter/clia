@@ -4,22 +4,28 @@ Command line arguments parser and [t3st](https://www.npmjs.com/package/t3st) exa
 
 ## usage
 
+In your [nodejs](https://www.w3schools.com/nodejs/) project dir, run:
+
+```bash
+npm i clia
+```
+
+Example command line input:
+```bash
+node your-node-app hello -a -ab -d world
+```
+
 In your-node-app:
 
 ```js
 const clia = require('clia')
 
-const opts = clia(process.argv.slice(2))
-```
+const conf = clia(process.argv.slice(2)) // in your app
 
-From the command line input:
-```bash
-node your-node-app hello -a -ab -d world
-```
+// test in your browser on: https://npm.runkit.com/clia
+// const conf = clia('hello -a -ab -d world'.split(' '))
 
-Yields
-```js
-{
+conf === {
   arg: { d: 'world' },
   args: { d: [ 'world' ] },
   opt: { a: true, b: true, d: true },
@@ -27,52 +33,45 @@ Yields
 }
 ```
 
-## parlance - options and arguments
+## parlance 
 
 ```
-cli a -b c --d --e=f
-a: argument (untagged)
-b: option (short)
-c: argument (tagged)
-d: option (long)
-e: option (key-value)
-f: argument (key-value)
+node your-app a -b c --d --e=f
+```
+```
+a: plain argument
+b: short option
+c: tagged argument
+d: long option
+e+f: key-value
 ```
 
-### option -> boolean flag(s)
+### **option**: boolean flag
 
-* **short** option
-  * starts with single `-`
-  * refers to one or more options
 * **long** option
   * starts with double `--`
-  * refers to one option
-* **key-value** option
-  * the `key` in `--key=value`
+  * refers to **one** option
+* **short** option
+  * starts with single `-`
+  * refers to one **or more** options
 
-### argument -> character(s)
+### **argument**: string of one or more character(s)
 
-* **untagged**: 
+* **plain**: 
   * argument(s) preceding any options
 * **tagged**
   * argument(s) succeeding the last short option or long option
-* **key-value** argument
-  * the `value` in `--key=value`
+  * The `arg` object returns the first `args` if there are any
+* **key-value**
+  * `--key=value` tagged argument that only sets the argument
+  * When a key-value option is stated more than once, all values are saved under `args`.
 
 ## parsing
 
-* If a `--` is encountered, it is ignored. All subsequent inputs are treated as arguments.
-
-## output
-
-* When a key-value option is stated more than once, all values are saved under `args`.
-
-* The `arg` object returns the first `args` if there are any
-
-## edge cases
-
-* `__proto__`  to prevent prototype pollution
-* key-value pair with missing value, eg: `--store=`
+* If `--` is encountered, it is ignored. All subsequent inputs are treated as arguments.
+* An error is thrown when: 
+  * any argument containts `__proto__`  *to prevent prototype pollution*
+  * key-value pair with missing key or value, eg: `--store=` or `--=pet`
 
 ## testing
 
@@ -81,13 +80,12 @@ Clone and run tests:
 ```bash
 git clone https://github.com/devmachiine/clia.git
 cd clia
-npm i # optional
-npm i -g nodemon # optional
 npm test
 ```
 
 To run live _(aka hot-reload)_ tests:
 ```bash
+npm i && npm i -g nodemon # optional to speed up reload
 # ctrl+c to exit.
 npm start 
 ```
