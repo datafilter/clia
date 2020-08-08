@@ -71,15 +71,13 @@ const first_arg = (args) => Object.keys(args).reduce((acc, key) => {
     return { ...o, ...acc }
 }, {})
 
-const copy_alias_values = (result, names) => {
+const copy_alias_values = (parsed, names) => {
     names.forEach(name => {
         const [letter] = name
-        const arg_val = result.args[name] || result.args[letter]
-        const opt_val = result.opt[name] || result.opt[letter]
-        if (arg_val)
-            result.args[name] = arg_val
-        if (opt_val)
-            result.opt[name] = opt_val
+        if (parsed.args[letter])
+            parsed.args[name] = parsed.args[letter]
+        if (parsed.opt[letter])
+            parsed.opt[name] = parsed.opt[letter]
     });
 }
 
