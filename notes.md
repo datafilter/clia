@@ -59,7 +59,7 @@ However the user can still input things you might not want, for example multiple
 
 To handle your specific cases, everying that is saved in `args`, `opt` and `plain` should be sufficient. If you discover a scenario that can't be handled, please do open an issue/pr :)
 
-Clia is options are intended to flag things as true. Eg `--silent` instead of `--no-output`
+Clia options are intended to flag things as true. Eg use `--silent` instead of `--no-output`
 
 Defaults aren't included in clia, as all the number of ways to parse/use defaults would result in an api that is harder to use than just having the consumer setup his own defaults. _(consider for example supporting `docker run --rm -it -v ${pwd}:/temp` and `git pull -r`)_
 
