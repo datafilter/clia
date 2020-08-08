@@ -15,7 +15,7 @@ In your-node-app:
 ```js
 const clia = require('clia')
 
-const conf = clia(process.argv.slice(2)) // in your app
+const conf = clia(process.argv.slice(2))
 
 // test in your browser on: https://npm.runkit.com/clia
 // const conf = clia('hello -a -ab -d world'.split(' '))
