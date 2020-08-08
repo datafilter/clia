@@ -1,6 +1,4 @@
 const parse_arg = (arg) => {
-    if (arg.includes('__proto__'))
-        throw Error('__proto__ not allowed within an argument to prevent prototype pollution.')
 
     if (arg.startsWith('--')) {
         if (arg === '--')
@@ -27,8 +25,11 @@ const parse_arg = (arg) => {
     return ['a', arg]
 }
 
-const combine_options = (opts) =>
-    opts.reduce((acc, next) => {
+const combine_input = (inputs) =>
+    inputs.reduce((acc, next) => {
+
+        if (next.includes('__proto__'))
+            throw Error('__proto__ not allowed within an argument to prevent prototype pollution.')
 
         const [kind, parsed] = acc.skip ? ['a', next] : parse_arg(next)
 
@@ -84,7 +85,7 @@ const copy_alias_values = (parsed, names) => {
 
 module.exports = (args = [], alias = []) => {
 
-    const parsed = combine_options(args)
+    const parsed = combine_input(args)
 
     copy_alias_values(parsed, alias)
 

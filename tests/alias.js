@@ -25,5 +25,13 @@ module.exports = async ({ test, alike }) => {
                 plain: []
             })
         })
+        , test("alias only sets arg for key-values, not opt", () => {
+            alike(cli('--f=*.t3.js -d proj/tests proj/lib', ['filter']), {
+                arg: { filter: '*.t3.js', f: '*.t3.js', d: 'proj/tests' },
+                args: { f: ['*.t3.js'], filter: ['*.t3.js'], d: ['proj/tests', 'proj/lib'] },
+                opt: { d: true },
+                plain: []
+            })
+        })
     ]
 }
