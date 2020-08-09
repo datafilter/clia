@@ -80,14 +80,19 @@ const copy_alias_values = (parsed, names) => {
     });
 }
 
+const trim_filter = (input) => input
+    .filter(a => typeof a === 'string')
+    .map(s => s.trim())
+    .filter(s => s.length)
+
 module.exports = (args = [], alias = []) => {
 
-    if(!Array.isArray(args) || !Array.isArray(alias))
+    if (!Array.isArray(args) || !Array.isArray(alias))
         throw Error(`expected input to be array(s). Eg clia(process.argv.slice(2),['alias','names'])`)
 
-    const parsed = combine_input(args)
+    const parsed = combine_input(trim_filter(args))
 
-    copy_alias_values(parsed, alias)
+    copy_alias_values(parsed, trim_filter(alias))
 
     return {
         arg: first_arg(parsed.args),

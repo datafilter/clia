@@ -33,9 +33,11 @@ conf === {
 }
 ```
 
-## parsing
+## edge cases
 
-If `--` is encountered, it is ignored. All subsequent inputs are treated as arguments.
+Empty or non-string inputs are ignored. Spaces are trimmed from inputs.
+
+When `--` is encountered, it is ignored. All subsequent inputs are treated as arguments even if they start with `-`.
 
 An error is thrown when: 
 * any argument containts `__proto__`  *to prevent prototype pollution*

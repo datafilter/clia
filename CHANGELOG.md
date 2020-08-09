@@ -1,3 +1,8 @@
+### 2020.8.10
+
+* empty or non-string inputs are ignored.
+* trim spaces around inputs
+
 ### 2020.8.9
 
 * remove unhandled kind throw
