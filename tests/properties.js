@@ -16,13 +16,14 @@ module.exports = ({ test }) => {
         + '-=--=--=--=--=--=--=--=--=--=--=--=-'
         + `~!@#$%^&*()_+{}:"<>?,./;'[]-=\``
 
-    const invalid_input = () => [`__proto__`, ` --=no-key`, ` --no-value=`][Math.floor(Math.random() * 3)]
+    const invalid_input = [`__proto__`, ` --=no-key`, ` --no-value=`]
 
-    return [...Array(100).keys()].map(_ =>
-        test("test random input only throws expected errors", () => {
+    const repeat_test = (name, times, f) => test(name, () => [...Array(times).keys()].map(f))
 
+    return [
+        repeat_test("test random input only throws expected errors", 100, () => {
             const random_input = shuffleArray(characters.split('')).join(' ')
-                + (Math.random() * 100 > 80 ? invalid_input() : '')
+                + (Math.random() * 100 < 80 ? '' : shuffleArray(invalid_input).find(_ => true))
 
             try {
                 clia(random_input.split(' '))
@@ -32,7 +33,7 @@ module.exports = ({ test }) => {
                     // expected error - do nothing.
                 } else throw err
             }
-
-        }))
+        })
+    ]
 }
 
