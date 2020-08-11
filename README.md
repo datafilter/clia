@@ -35,7 +35,46 @@ conf === {
 
 ## edge cases
 
-Empty or non-string inputs are ignored. Spaces are trimmed from inputs.
+Spaces are trimmed from inputs.
+
+Empty or non-string inputs are ignored. 
+
+Inputs that contain `__proto__` or `prototype` are ignored. *(To prevent prototype pollution.)*
+
+If there are any errors, there will be an `errors` property in the return value
+
+Example *invalid* command line input:
+
+```bash
+node your-app.js valid --ok=yes prototype last-token
+```
+yields
+```javascript
+{
+    errors: [
+        'One or more args were excluded from parsing. Reason: Not a string, string is empty or spaces only, string contains __proto__ or prototype.'
+    ],
+    arg: { ok: 'yes' },
+    args: { ok: ['yes'] },
+    opt: {},
+    plain: ['valid', 'last-token']
+}
+```
+
+It is recommended that you check for any input errors.
+
+```javascript
+// in main.js/index.js
+const conf = clia(process.argv.slice(2))
+
+if(conf.errors){
+    // graceful exit
+    console.log('Could not parse command line input, errors:')
+    console.log(conf.errors)
+    require('process').exitCode(1)
+    return
+}
+```
 
 When `--` is encountered, it is ignored. All subsequent inputs are treated as arguments even if they start with `-`.
 
@@ -45,9 +84,6 @@ eg:
 option `--store=` yields: `{ .. opt: { 'store=': true }`
 
 option `--=pet` yields: `{ .. opt: { '=pet': true }`
-
-An error is thrown when: 
-* any argument containts `__proto__`  *to prevent prototype pollution*
 
 
 ## alias

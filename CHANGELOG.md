@@ -1,6 +1,6 @@
 ### 2020.8.11
 
-* key-value parsing no longer throws error
+* set errors in optional property instead of throwing
 * entire rhs of key-value = symbol is saved in value
 * also reject 'prototype' argument/options
 

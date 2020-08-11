@@ -27,9 +27,6 @@ const parse_arg = (arg) => {
 const combine_input = (inputs) =>
     inputs.reduce((acc, next) => {
 
-        if (next.includes('__proto__') || next.includes('prototype'))
-            throw Error(`invalid input: __proto__ and prototype is not allowed within any argument or options.`)
-
         const [kind, parsed] = acc.skip ? ['a', next] : parse_arg(next)
 
         if (kind === 'o') {
@@ -38,8 +35,7 @@ const combine_input = (inputs) =>
                 tag: parsed.length == 1 && parsed.find(_ => true) || acc.tag,
                 opt: { ...acc.opt, ...options },
                 args: acc.args,
-                plain: acc.plain,
-                errors: acc.errors
+                plain: acc.plain
             }
         }
         else if (kind === 'a') {
@@ -64,12 +60,6 @@ const combine_input = (inputs) =>
         plain: []
     })
 
-const first_arg = (args) => Object.keys(args).reduce((acc, key) => {
-    const [val] = args[key]
-    const o = { [key]: val }
-    return { ...o, ...acc }
-}, {})
-
 const copy_alias_values = (parsed, names) => {
     names.forEach(name => {
         const [letter] = name
@@ -80,19 +70,46 @@ const copy_alias_values = (parsed, names) => {
     });
 }
 
-const trim_filter = (input) => input
-    .filter(a => typeof a === 'string')
-    .map(s => s.trim())
-    .filter(s => s.length)
+const first_arg = (args) => Object.keys(args).reduce((acc, key) => {
+    const [val] = args[key]
+    const o = { [key]: val }
+    return { ...o, ...acc }
+}, {})
+
+const validate_input = (args, alias) => {
+
+    if (!Array.isArray(args) || !Array.isArray(alias))
+        return [[], [], [`Expected input to be array(s). Eg clia(process.argv.slice(2),['alias','names'])`]]
+
+    const trim_filter = (input) => input
+        .filter(a => typeof a === 'string')
+        .filter(s => !s.includes('__proto__'))
+        .filter(s => !s.includes('prototype'))
+        .map(s => s.trim())
+        .filter(s => s.length)
+
+    const filter_reason = `Not a string, string is empty or spaces only, string contains __proto__ or prototype.`
+
+    const valid_args = trim_filter(args)
+    const valid_alias = trim_filter(alias)
+
+    const errors = [
+        valid_args.length < args.length ?
+            `One or more args were excluded from parsing. Reason: ${filter_reason}` : '',
+        valid_alias.length < alias.length ?
+            `One or more aliases were excluded from parsing. Reason: ${filter_reason}` : '']
+        .filter(e => e.length)
+
+    return [valid_args, valid_alias, errors]
+}
 
 module.exports = (args = [], alias = []) => {
 
-    if (!Array.isArray(args) || !Array.isArray(alias))
-        throw Error(`expected input to be array(s). Eg clia(process.argv.slice(2),['alias','names'])`)
+    const [valid_args, valid_alias, errors] = validate_input(args, alias)
 
-    const parsed = combine_input(trim_filter(args))
+    const parsed = combine_input(valid_args)
 
-    copy_alias_values(parsed, trim_filter(alias))
+    copy_alias_values(parsed, valid_alias)
 
     const result = {
         arg: first_arg(parsed.args),
@@ -101,6 +118,5 @@ module.exports = (args = [], alias = []) => {
         plain: parsed.plain
     }
 
-    return result
-
+    return errors.length ? { ...{ errors }, ...result } : result
 }

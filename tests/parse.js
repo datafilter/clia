@@ -94,24 +94,10 @@ module.exports = async ({ test, alike }) => {
                 plain: []
             })
         })
-        // ---------- ---------- ---------- empty input
+        // ---------- ---------- ---------- spaced input
         , test("spaces are trimmed", () => {
             const spaced_input = ['--shape  ', '    square', '   triangle   ', 'circle', ' -u ', ' n', ' i']
             alike(clia(spaced_input), {
-                arg: { shape: 'square', u: 'n' },
-                args: { shape: ['square', 'triangle', 'circle'], u: ['n', 'i'] },
-                opt: { shape: true, u: true },
-                plain: []
-            })
-        })
-        , test("empty or non-string inputs are ignored", () => {
-            /* eslint-disable no-sparse-arrays */
-            alike(clia([, , , ,]), clia())
-            alike(clia([1, { hello: 'world' }, true]), clia())
-            alike(clia([, '--key=val', , , 'a']), clia([, '--key=val', undefined, 'a']))
-            const mixed = ['--shape', '   ', , , , 'square', ' ', undefined, '', '', 'triangle', 'circle', '-u', 'n', 'i']
-            /* eslint-enable no-sparse-arrays */
-            alike(clia(mixed), {
                 arg: { shape: 'square', u: 'n' },
                 args: { shape: ['square', 'triangle', 'circle'], u: ['n', 'i'] },
                 opt: { shape: true, u: true },
