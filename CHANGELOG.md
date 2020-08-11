@@ -1,3 +1,9 @@
+### 2020.8.11
+
+* key-value parsing no longer throws error
+* entire rhs of key-value = symbol is saved in value
+* also reject 'prototype' argument/options
+
 ### 2020.8.10
 
 * empty or non-string inputs are ignored.

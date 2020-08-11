@@ -39,9 +39,16 @@ Empty or non-string inputs are ignored. Spaces are trimmed from inputs.
 
 When `--` is encountered, it is ignored. All subsequent inputs are treated as arguments even if they start with `-`.
 
+Key-values with missing key or value are saved as-is:
+eg: 
+
+option `--store=` yields: `{ .. opt: { 'store=': true }`
+
+option `--=pet` yields: `{ .. opt: { '=pet': true }`
+
 An error is thrown when: 
 * any argument containts `__proto__`  *to prevent prototype pollution*
-* key-value pair with missing key or value, eg: `--store=` or `--=pet`
+
 
 ## alias
 
@@ -86,4 +93,5 @@ yields
 [![Snyk](https://img.shields.io/npm/t3st/two.svg)](https://npmjs.com/two)
 [![Coverage](https://img.shields.io/npm/t3st/four.svg)](https://npmjs.com/four)
 [![OtherMetric](https://img.shields.io/npm/t3st/one.svg)](https://npmjs.com/one)
+[![OtherMetric](https://img.shields.io/npm/t3st/three.svg)](https://npmjs.com/three)
 -->

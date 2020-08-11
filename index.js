@@ -7,11 +7,10 @@ const parse_arg = (arg) => {
         const option = arg.slice(2)
 
         if (option.includes('=')) {
-            const [key, value] = option.split('=')
+            const [key, value] = option.split(/=(.*)/)
             if (key === '' || value === '')
-                throw Error(`key-value has empty key or value (${arg}). Expected at least one, eg: --pet=cat`)
-
-            return ['kv', [key, value]]
+                return ['o', [option]]
+            else return ['kv', [key, value]]
         }
 
         return ['o', [option]]
@@ -28,8 +27,8 @@ const parse_arg = (arg) => {
 const combine_input = (inputs) =>
     inputs.reduce((acc, next) => {
 
-        if (next.includes('__proto__'))
-            throw Error(`__proto__ not allowed within an argument to prevent prototype pollution.`)
+        if (next.includes('__proto__') || next.includes('prototype'))
+            throw Error(`invalid input: __proto__ and prototype is not allowed within any argument or options.`)
 
         const [kind, parsed] = acc.skip ? ['a', next] : parse_arg(next)
 
@@ -39,7 +38,8 @@ const combine_input = (inputs) =>
                 tag: parsed.length == 1 && parsed.find(_ => true) || acc.tag,
                 opt: { ...acc.opt, ...options },
                 args: acc.args,
-                plain: acc.plain
+                plain: acc.plain,
+                errors: acc.errors
             }
         }
         else if (kind === 'a') {
@@ -94,10 +94,13 @@ module.exports = (args = [], alias = []) => {
 
     copy_alias_values(parsed, trim_filter(alias))
 
-    return {
+    const result = {
         arg: first_arg(parsed.args),
         args: parsed.args,
         opt: parsed.opt,
         plain: parsed.plain
     }
+
+    return result
+
 }

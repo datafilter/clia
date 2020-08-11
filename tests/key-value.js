@@ -43,6 +43,24 @@ module.exports = async ({ test, alike }) => {
                 plain: []
             })
         })
+        , test("empty key key-value sets =option", () => {
+            alike(cli('--=val'), {
+                arg: {}, args: {}, opt: { '=val': true }, plain: []
+            })
+        })
+        , test("empty value key-value sets option=", () => {
+            alike(cli('--opt='), {
+                arg: {}, args: {}, opt: { 'opt=': true }, plain: []
+            })
+        })
+        , test("multiple = key-value splits on first = and saves all remaining characers", () => {
+            alike(cli('--multi=equals=split=value'), {
+                arg: { multi: 'equals=split=value' },
+                args: { multi: ['equals=split=value'] },
+                opt: {},
+                plain: []
+            })
+        })
     ]
 }
 

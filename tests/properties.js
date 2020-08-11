@@ -56,8 +56,7 @@ module.exports = ({ test, affirm }) => {
             try {
                 clia(random_input().split(' '))
             } catch (err) {
-                if (err.message.includes('key-value has empty key or value')
-                    || (err.message.includes('__proto__ not allowed'))) {
+                if (err.message.includes('__proto__')) {
                     // expected error - do nothing.
                 } else throw err
             }
@@ -119,8 +118,7 @@ module.exports = ({ test, affirm }) => {
                 }
 
             } catch (err) {
-                if (err.message.includes('key-value has empty key or value')
-                    || (err.message.includes('__proto__ not allowed'))) {
+                if (err.message.includes('__proto__')) {
                     // expected error - do nothing.
                 } else throw err
             }

@@ -28,16 +28,10 @@ module.exports = async ({ test, affirm }) => {
         , test_err("checks even when skipping parsing", () => {
             cli('throw even after -- verbatim operator __proto__')
         })
-        , test_err("empty key key-value throws error", () => {
-            cli('--=val')
-        })
-        , test_err("empty value key-value throws error", () => {
-            cli('--opt=')
-        })
         , test_err("non array input(s) throws error", () => {
             clia('fails.. todo, accept string as input?')
         }, err => {
-            affirm(err.message, e => e.includes('expected input to be array') )
+            affirm(err.message, e => e.includes('expected input to be array'))
         })
     ]
 }
