@@ -120,8 +120,7 @@ yields
 
 [Dev/specs](https://github.com/devmachiine/clia/blob/master/notes.md)
 
-
-![CI](https://github.com/devmachiine/clia/workflows/CI/badge.svg)
+![CI/CD](https://github.com/devmachiine/clia/workflows/CI/CD/badge.svg)
 
 [![License](https://img.shields.io/badge/license-MIT-black)](https://img.shields.io/badge/license-MIT-black)
 
