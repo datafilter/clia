@@ -1,11 +1,11 @@
-module.exports = ({ test, alike }) => {
+module.exports = ({ test, equal }) => {
 
     const clia = require('../index')
 
     return [
         test("demo short option", () => {
             const example = clia('hello -a -ab -d world'.split(' '))
-            alike(example, {
+            equal(example, {
                 arg: { d: 'world' },
                 args: { d: ['world'] },
                 opt: { a: true, b: true, d: true },
@@ -15,7 +15,7 @@ module.exports = ({ test, alike }) => {
         test("demo alias", () => {
             const example = clia('run -o yaml --d=/usr/bin --fruit=mango'.split(' ')
                 , ['output', 'directory', 'fruit'])
-            alike(example, {
+            equal(example, {
                 arg: {
                     o: 'yaml', output: 'yaml',
                     d: '/usr/bin', directory: '/usr/bin',

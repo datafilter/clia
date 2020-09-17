@@ -1,4 +1,4 @@
-module.exports = async ({ test, alike }) => {
+module.exports = async ({ test, equal }) => {
 
     const clia = require('../index')
 
@@ -6,7 +6,7 @@ module.exports = async ({ test, alike }) => {
 
     return [
         test("key-value sets argument string", () => {
-            alike(cli('--opt=some'), {
+            equal(cli('--opt=some'), {
                 arg: { opt: 'some' },
                 args: { opt: ['some'] },
                 opt: {},
@@ -14,7 +14,7 @@ module.exports = async ({ test, alike }) => {
             })
         })
         , test("key-value does not set opt", () => {
-            alike(cli('--rock=quartz'), {
+            equal(cli('--rock=quartz'), {
                 arg: { rock: 'quartz' },
                 args: { rock: ['quartz'] },
                 opt: {},
@@ -22,13 +22,13 @@ module.exports = async ({ test, alike }) => {
             })
         })
         , test("key-value is saved regardles of same name option", () => {
-            alike(cli('--rover=some --rover'), {
+            equal(cli('--rover=some --rover'), {
                 arg: { rover: 'some' },
                 args: { rover: ['some'] },
                 opt: { rover: true },
                 plain: []
             })
-            alike(cli('--rover --rover=mars'), {
+            equal(cli('--rover --rover=mars'), {
                 arg: { rover: 'mars' },
                 args: { rover: ['mars'] },
                 opt: { rover: true },
@@ -36,7 +36,7 @@ module.exports = async ({ test, alike }) => {
             })
         })
         , test("key-value saves all key values in args", () => {
-            alike(cli('--shape=square --shape=triangle'), {
+            equal(cli('--shape=square --shape=triangle'), {
                 arg: { shape: 'square' },
                 args: { shape: ['square', 'triangle'] },
                 opt: {},
@@ -44,17 +44,17 @@ module.exports = async ({ test, alike }) => {
             })
         })
         , test("empty key key-value sets =option", () => {
-            alike(cli('--=val'), {
+            equal(cli('--=val'), {
                 arg: {}, args: {}, opt: { '=val': true }, plain: []
             })
         })
         , test("empty value key-value sets option=", () => {
-            alike(cli('--opt='), {
+            equal(cli('--opt='), {
                 arg: {}, args: {}, opt: { 'opt=': true }, plain: []
             })
         })
         , test("multiple = key-value splits on first = and saves all remaining characers", () => {
-            alike(cli('--multi=equals=split=value'), {
+            equal(cli('--multi=equals=split=value'), {
                 arg: { multi: 'equals=split=value' },
                 args: { multi: ['equals=split=value'] },
                 opt: {},

@@ -1,4 +1,4 @@
-module.exports = async ({ test, assert, alike }) => {
+module.exports = async ({ test, equal }) => {
 
     const { execSync } = require("child_process")
     const shell = (cmd) => execSync(cmd) + ''
@@ -13,11 +13,11 @@ module.exports = async ({ test, assert, alike }) => {
             const sparse = has_empty('some tokens and s p a c e s')
             const distant = has_empty('some tokens           and      s p  a   c   e    s')
 
-            assert(sparse, distant)
+            equal(sparse, distant)
 
             const rebuilt_input = JSON.parse(json_quotes(`{ "$": ${sparse}}`)).$
 
-            alike(rebuilt_input, ['tokens', 'and', 's', 'p', 'a', 'c', 'e', 's'])
+            equal(rebuilt_input, ['tokens', 'and', 's', 'p', 'a', 'c', 'e', 's'])
         })
     ]
 }

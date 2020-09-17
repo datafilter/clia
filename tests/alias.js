@@ -1,4 +1,4 @@
-module.exports = async ({ test, alike }) => {
+module.exports = async ({ test, equal }) => {
 
     const clia = require('../index')
 
@@ -6,7 +6,7 @@ module.exports = async ({ test, alike }) => {
 
     return [
         test("alias does not add args or opt if they are not set", () => {
-            alike(cli('-f banana apple --ananas dog cat', ['a', 'bark', 'york']), {
+            equal(cli('-f banana apple --ananas dog cat', ['a', 'bark', 'york']), {
                 arg: { ananas: 'dog', f: 'banana' },
                 args: { f: ['banana', 'apple'], ananas: ['dog', 'cat'] },
                 opt: { f: true, ananas: true },
@@ -14,7 +14,7 @@ module.exports = async ({ test, alike }) => {
             })
         })
         , test("alias sets arg and args values", () => {
-            alike(cli('-f banana apple --ananas dog cat', ['fruit', 'ananas']), {
+            equal(cli('-f banana apple --ananas dog cat', ['fruit', 'ananas']), {
                 arg: { fruit: 'banana', ananas: 'dog', f: 'banana' },
                 args: {
                     f: ['banana', 'apple'],
@@ -26,7 +26,7 @@ module.exports = async ({ test, alike }) => {
             })
         })
         , test("alias only sets arg for key-values, not opt", () => {
-            alike(cli('--f=*.t3.js -d proj/tests proj/lib', ['filter']), {
+            equal(cli('--f=*.t3.js -d proj/tests proj/lib', ['filter']), {
                 arg: { filter: '*.t3.js', f: '*.t3.js', d: 'proj/tests' },
                 args: { f: ['*.t3.js'], filter: ['*.t3.js'], d: ['proj/tests', 'proj/lib'] },
                 opt: { d: true },
