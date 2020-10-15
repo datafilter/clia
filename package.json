@@ -29,6 +29,6 @@
   },
   "homepage": "https://github.com/devmachiine/clia#readme",
   "devDependencies": {
-    "t3st": "^2020.8.6"
+    "t3st": "^2020.10.14"
   }
 }

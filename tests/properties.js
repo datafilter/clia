@@ -1,4 +1,4 @@
-module.exports = ({ test, affirm }) => {
+module.exports = ({ test, check }) => {
 
     const clia = require('../index')
 
@@ -61,7 +61,7 @@ module.exports = ({ test, affirm }) => {
                 } else throw err
             }
         })
-        , repeat_test("has tokens for every valid input", 100, () => {
+        , repeat_test("has tokens for every valid input", 1000, () => {
             try {
                 const input = random_input().split(' ')
                 const parsed = clia(input)
@@ -105,11 +105,11 @@ module.exports = ({ test, affirm }) => {
                                     const [kind, options] = parse_arg(ignored_input)
 
                                     // the ignored new token is an option
-                                    affirm(ignored_input, c => c.startsWith('-'))
-                                    affirm(kind, k => k === 'o')
+                                    check(ignored_input, c => c.startsWith('-'))
+                                    check(kind, k => k === 'o')
 
                                     // that has already been set in parsed.opt
-                                    affirm(options, previous_parse, (opts, prev) => opts.some(o => prev.opt[o]))
+                                    check(options, previous_parse, (opts, prev) => opts.some(o => prev.opt[o]))
 
                                 } else previous_parse = new_parse
                             }
