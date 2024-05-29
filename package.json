@@ -13,7 +13,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/devmachiine/clia.git"
+    "url": "git+https://github.com/datafilter/clia.git"
   },
   "keywords": [
     "cli",
@@ -22,12 +22,12 @@
     "testing",
     "test"
   ],
-  "author": "devmachiine",
+  "author": "datafilter",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/devmachiine/clia/issues"
+    "url": "https://github.com/datafilter/clia/issues"
   },
-  "homepage": "https://github.com/devmachiine/clia#readme",
+  "homepage": "https://github.com/datafilter/clia#readme",
   "devDependencies": {
     "t3st": "^2020.10.14"
   }

@@ -7,8 +7,8 @@ You can give it a quick test [in your browser on runkit](https://npm.runkit.com/
 const conf = clia('hello -a -ab -d world'.split(' '))
 ```
 
-Like the other parsers, clia follows the same syntax conventions documented in [design docs](https://github.com/devmachiine/clia/blob/master/notes.md) with [lots of tests/examples here](
-https://github.com/devmachiine/clia/tree/master/tests). 
+Like the other parsers, clia follows the same syntax conventions documented in [design docs](https://github.com/datafilter/clia/blob/master/notes.md) with [lots of tests/examples here](
+https://github.com/datafilter/clia/tree/master/tests). 
 
 
 ## usage

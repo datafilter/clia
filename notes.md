@@ -37,7 +37,7 @@ e+f: key-value
 Clone and run tests:
 
 ```bash
-git clone https://github.com/devmachiine/clia.git
+git clone https://github.com/datafilter/clia.git
 cd clia
 npm test
 ```
