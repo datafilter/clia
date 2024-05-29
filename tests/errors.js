@@ -54,7 +54,6 @@ module.exports = async ({ test, equal }) => {
             equal(clia({ a: 'bc' }), input_error_result)
         })
         , test("empty or non-string inputs are ignored", () => {
-            /* eslint-disable no-sparse-arrays */
             equal(clia([, , , ,]), {
                 ...empty,
                 ...args_error_obj
