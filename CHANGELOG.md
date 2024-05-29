@@ -1,22 +1,26 @@
+### 2024.5.29
+
+* No functional changes - update docs, linter & ci/cd.
+
 ### 2020.8.11
 
-* set errors in optional property instead of throwing
-* entire rhs of key-value = symbol is saved in value
-* also reject 'prototype' argument/options
+* Set errors in optional property instead of throwing
+* Entire rhs of key-value = symbol is saved in value
+* Reject 'prototype' argument/options
 
 ### 2020.8.10
 
-* empty or non-string inputs are ignored.
-* trim spaces around inputs
+* Empty or non-string inputs are ignored.
+* Trim spaces around inputs
 
 ### 2020.8.9
 
-* remove unhandled kind throw
-* improved error for unexpected input
+* Remove unhandled kind throw
+* Improved error for unexpected input
 
 ### 2020.8.8
 
-* throw on __proto__ argument even after `--`
+* Throw on __proto__ argument even after `--`
 
 ### 2020.8.7
 

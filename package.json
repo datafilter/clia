@@ -1,7 +1,7 @@
 {
   "name": "clia",
-  "version": "2020.8.11",
-  "description": "Command line parser and t3st example project",
+  "version": "2024.5.29",
+  "description": "Command line arguments parser",
   "main": "index.js",
   "scripts": {
     "test": "npx t3st",
@@ -17,6 +17,7 @@
   },
   "keywords": [
     "cli",
+    "arguments",
     "parser",
     "t3st",
     "testing",
