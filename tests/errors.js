@@ -64,7 +64,6 @@ module.exports = async ({ test, equal }) => {
             })
             equal(clia([true, '--key=val', 3, , {}, 'a']), clia([, '--key=val', undefined, 'a']))
             const mixed = ['--shape', '   ', , , , 'square', ' ', undefined, '', '', 'triangle', 'circle', '-u', 'n', 'i']
-            // /* eslint-enable no-sparse-arrays */
             equal(clia(mixed), {
                 arg: { u: 'n', shape: 'square' },
                 args: { shape: ['square', 'triangle', 'circle'], u: ['n', 'i'] },
