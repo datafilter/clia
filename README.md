@@ -1,24 +1,30 @@
 #  clia
 
-Command line arguments parser and [t3st](https://www.npmjs.com/package/t3st) example project.
+Command line arguments parser. Similar to [command-line-args](https://www.npmjs.com/package/command-line-args), [getopts](https://www.npmjs.com/package/getopts) and [nopt](https://www.npmjs.com/package/nopt), but quite smaller with less files and jokes.
+
+You can give it a quick test [in your browser on runkit](https://npm.runkit.com/clia) with
+```js
+const conf = clia('hello -a -ab -d world'.split(' '))
+```
+
+Like the other parsers, clia follows the same syntax conventions documented in [design docs](https://github.com/devmachiine/clia/blob/master/notes.md) with [lots of tests/examples here](
+https://github.com/devmachiine/clia/tree/master/tests). 
+
 
 ## usage
 
 Example command line input:
 
 ```bash
-node your-node-app hello -a -ab -d world
+node your-app hello -a -ab -d world
 ```
 
-In your-node-app:
+In `your-app` you get parsed command line arguments as follows:
 
 ```js
 const clia = require('clia')
 
 const conf = clia(process.argv.slice(2))
-
-// test in your browser on: https://npm.runkit.com/clia
-// const conf = clia('hello -a -ab -d world'.split(' '))
 
 conf === {
   // arguments before any options
@@ -30,6 +36,36 @@ conf === {
   args: { d: [ 'world' ] }, 
   // the first value of each args property, so that you can use arg.prop instead of args.prop[0]
   arg: { d: 'world' }, 
+}
+```
+
+## alias
+
+Pass a second argument to clia to specify aliases:
+
+```javascript
+clia('run -o yaml --d=/usr/bin --fruit=mango'.split(' ')
+                , ['output', 'directory', 'fruit'])
+```
+yields
+```javascript
+{
+    arg: {
+        o: 'yaml', output: 'yaml',
+        d: '/usr/bin', directory: '/usr/bin',
+        fruit: 'mango'
+    },
+    args: {
+        o: ['yaml'], output: ['yaml'],
+        d: ['/usr/bin'], directory: ['/usr/bin'],
+        // note key-value doesn't set option
+        // even when kv/value matches alias 
+        fruit: ['mango']
+    },
+    // note key-value doesn't set opt
+    // even when kv/value is short option that has an alias
+    opt: { o: true, output: true },
+    plain: ['run']
 }
 ```
 
@@ -78,55 +114,15 @@ if(conf.errors){
 
 When `--` is encountered, it is ignored. All subsequent inputs are treated as arguments even if they start with `-`.
 
-Key-values with missing key or value are saved as-is:
-eg: 
+Key-values with missing key or value are saved as is, eg: 
 
 option `--store=` yields: `{ .. opt: { 'store=': true }`
 
 option `--=pet` yields: `{ .. opt: { '=pet': true }`
 
+## example
 
-## alias
+An example of where clia is used to parse command line arguments, with "autocomplete" _(`Cli option not found. Did you mean ___`)_ can be found [here](https://github.com/datafilter/t3st/blob/master/bin/parse.js)
 
-```javascript
-clia('run -o yaml --d=/usr/bin --fruit=mango'.split(' ')
-                , ['output', 'directory', 'fruit'])
-```
-yields
-```javascript
-{
-    arg: {
-        o: 'yaml', output: 'yaml',
-        d: '/usr/bin', directory: '/usr/bin',
-        fruit: 'mango'
-    },
-    args: {
-        o: ['yaml'], output: ['yaml'],
-        d: ['/usr/bin'], directory: ['/usr/bin'],
-        // note key-value doesn't set option
-        // even when kv/value matches alias 
-        fruit: ['mango']
-    },
-    // note key-value doesn't set opt
-    // even when kv/value is short option that has an alias
-    opt: { o: true, output: true },
-    plain: ['run']
-}
-```
 
-## Docs
 
-[All examples here](https://github.com/devmachiine/clia/tree/master/tests)
-
-[Dev/specs](https://github.com/devmachiine/clia/blob/master/notes.md)
-
-![CI/CD](https://github.com/devmachiine/clia/workflows/CI/CD/badge.svg)
-
-[![License](https://img.shields.io/badge/license-MIT-black)](https://img.shields.io/badge/license-MIT-black)
-
-<!-- Todo Metrics
-[![Snyk](https://img.shields.io/npm/t3st/two.svg)](https://npmjs.com/two)
-[![Coverage](https://img.shields.io/npm/t3st/four.svg)](https://npmjs.com/four)
-[![OtherMetric](https://img.shields.io/npm/t3st/one.svg)](https://npmjs.com/one)
-[![OtherMetric](https://img.shields.io/npm/t3st/three.svg)](https://npmjs.com/three)
--->
