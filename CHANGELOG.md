@@ -2,25 +2,21 @@
 
 * Make invalid arguments error message more direct 
 
-### 2024.5.29
-
-* No functional changes - update docs, linter & ci/cd.
-
 ### 2020.8.11
 
 * Set errors in optional property instead of throwing
-* Entire rhs of key-value = symbol is saved in value
+* Save entire RHS of key-value = symbol
 * Reject 'prototype' argument/options
 
 ### 2020.8.10
 
-* Empty or non-string inputs are ignored.
+* Ignore empty or non-string inputs
 * Trim spaces around inputs
 
 ### 2020.8.9
 
 * Remove unhandled kind throw
-* Improved error for unexpected input
+* Improve error for unexpected input
 
 ### 2020.8.8
 
