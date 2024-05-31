@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "npx t3st",
-    "dev": "npx nodemon -x \"npx t3st\"",
+    "start": "npx nodemon -x \"npx t3st\"",
     "lint": "npx eslint@9 ."
   },
   "files": [
