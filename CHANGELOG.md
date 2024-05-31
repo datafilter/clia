@@ -1,3 +1,7 @@
+### 2024.5.31
+
+* Make invalid arguments error message more direct 
+
 ### 2024.5.29
 
 * No functional changes - update docs, linter & ci/cd.

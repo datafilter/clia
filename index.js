@@ -1,53 +1,53 @@
-const parse_arg = (arg) => {
+const parse = (token) => {
 
-    if (arg.startsWith('--')) {
-        if (arg === '--')
-            return ['a', '--']
+    if (token.startsWith('--')) {
+        if (token === '--')
+            return { arg: '--' }
 
-        const option = arg.slice(2)
+        const option = token.slice(2)
 
         if (option.includes('=')) {
             const [key, value] = option.split(/=(.*)/)
             if (key === '' || value === '')
-                return ['o', [option]]
-            else return ['kv', [key, value]]
+                return { opt: [option] }
+            else return { kv: { k: key, v: value } }
         }
 
-        return ['o', [option]]
+        return { opt: [option] }
     }
 
-    if (arg.startsWith('-') && arg.length > 1) {
-        const options = arg.slice(1).split('')
-        return ['o', options]
+    if (token.startsWith('-') && token.length > 1) {
+        const options = token.slice(1).split('')
+        return { opt: options }
     }
 
-    return ['a', arg]
+    return { arg: token }
 }
 
 const combine_input = (inputs) =>
     inputs.reduce((acc, next) => {
 
-        const [kind, parsed] = acc.skip ? ['a', next] : parse_arg(next)
-
-        if (kind === 'o') {
-            const options = parsed.map(o => ({ [o]: true })).reduce((acc, next) => ({ ...acc, ...next }), {})
+        const { opt, arg, kv } = acc.skip ? { arg: next} : parse(next)
+	
+        if (opt) {
+            const options = opt.map(o => ({ [o]: true })).reduce((acc, next) => ({ ...acc, ...next }), {})
             return {
-                tag: parsed.length == 1 && parsed.find(_ => true) || acc.tag,
+                tag: opt.length == 1 && opt.find(_ => true) || acc.tag,
                 opt: { ...acc.opt, ...options },
                 args: acc.args,
                 plain: acc.plain
             }
         }
-        else if (kind === 'a') {
-            if (parsed === '--' && !acc.skip) {
+	else if (arg) {
+            if (arg === '--' && !acc.skip) {
                 acc.skip = true
             } else if (acc.tag) {
-                acc.args[acc.tag] = [...acc.args[acc.tag] || [], parsed]
+                acc.args[acc.tag] = [...acc.args[acc.tag] || [], arg]
             }
-            else acc.plain.push(parsed)
+            else acc.plain.push(arg)
         }
-        else if (kind === 'kv') {
-            const [k, v] = parsed
+	else if (kv) {
+            const { k, v } = kv
             acc.args[k] = [...acc.args[k] || [], v]
         }
 
@@ -79,7 +79,7 @@ const first_arg = (args) => Object.keys(args).reduce((acc, key) => {
 const validate_input = (args, alias) => {
 
     if (!Array.isArray(args) || !Array.isArray(alias))
-        return [[], [], [`Expected input to be array(s). Eg clia(process.argv.slice(2),['alias','names'])`]]
+        return { errors: [`Expected input to be array(s). Eg clia(process.argv.slice(2),['alias','names'])`] }
 
     const trim_filter = (input) => input
         .filter(a => typeof a === 'string')
@@ -88,35 +88,33 @@ const validate_input = (args, alias) => {
         .map(s => s.trim())
         .filter(s => s.length)
 
-    const filter_reason = `Not a string, string is empty or spaces only, string contains __proto__ or prototype.`
-
     const valid_args = trim_filter(args)
     const valid_alias = trim_filter(alias)
 
+    const inputs_requirement = `Inputs should be non-empty strings which don't contain __proto__ or prototype.`
+    const error_message = (inputs) => `One or more ${inputs} were excluded from parsing. ${inputs_requirement}`
+
     const errors = [
-        valid_args.length < args.length ?
-            `One or more args were excluded from parsing. Reason: ${filter_reason}` : '',
-        valid_alias.length < alias.length ?
-            `One or more aliases were excluded from parsing. Reason: ${filter_reason}` : '']
+        valid_args.length < args.length ? error_message('args') : '',
+        valid_alias.length < alias.length ? error_message('aliases') : '']
         .filter(e => e.length)
 
-    return [valid_args, valid_alias, errors]
+    return { valid_args, valid_alias, errors } 
 }
 
 module.exports = (args = [], alias = []) => {
 
-    const [valid_args, valid_alias, errors] = validate_input(args, alias)
+    const { valid_args, valid_alias, errors } = validate_input(args, alias)
 
-    const parsed = combine_input(valid_args)
+    const parsed = combine_input(valid_args ?? [])
 
-    copy_alias_values(parsed, valid_alias)
+    copy_alias_values(parsed, valid_alias ?? [])
 
-    const result = {
+    return {
         arg: first_arg(parsed.args),
         args: parsed.args,
         opt: parsed.opt,
-        plain: parsed.plain
+        plain: parsed.plain,
+	...(errors.length ? { errors } : {})
     }
-
-    return errors.length ? { ...{ errors }, ...result } : result
 }

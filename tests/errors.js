@@ -11,7 +11,7 @@ module.exports = async ({ test, equal }) => {
         plain: []
     }
 
-    const args_error_message = 'One or more args were excluded from parsing. Reason: Not a string, string is empty or spaces only, string contains __proto__ or prototype.'
+    const args_error_message = "One or more args were excluded from parsing. Inputs should be non-empty strings which don't contain __proto__ or prototype."
 
     const args_error_obj = {
         errors: [args_error_message]
@@ -26,9 +26,7 @@ module.exports = async ({ test, equal }) => {
         })
         , test("valid arguments are still parsed", () => {
             equal(cli('valid --ok=yes prototype last-token'), {
-                errors: [
-                    'One or more args were excluded from parsing. Reason: Not a string, string is empty or spaces only, string contains __proto__ or prototype.'
-                ],
+                errors: [ args_error_message ],
                 arg: { ok: 'yes' },
                 args: { ok: ['yes'] },
                 opt: {},
