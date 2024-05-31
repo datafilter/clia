@@ -27,8 +27,8 @@ const parse = (token) => {
 const combine_input = (inputs) =>
     inputs.reduce((acc, next) => {
 
-        const { opt, arg, kv } = acc.skip ? { arg: next} : parse(next)
-	
+        const { opt, arg, kv } = acc.skip ? { arg: next } : parse(next)
+
         if (opt) {
             const options = opt.map(o => ({ [o]: true })).reduce((acc, next) => ({ ...acc, ...next }), {})
             return {
@@ -38,7 +38,7 @@ const combine_input = (inputs) =>
                 plain: acc.plain
             }
         }
-	else if (arg) {
+        else if (arg) {
             if (arg === '--' && !acc.skip) {
                 acc.skip = true
             } else if (acc.tag) {
@@ -46,7 +46,7 @@ const combine_input = (inputs) =>
             }
             else acc.plain.push(arg)
         }
-	else if (kv) {
+        else if (kv) {
             const { k, v } = kv
             acc.args[k] = [...acc.args[k] || [], v]
         }
@@ -67,7 +67,7 @@ const copy_alias_values = (parsed, names) => {
             parsed.args[name] = parsed.args[letter]
         if (parsed.opt[letter])
             parsed.opt[name] = parsed.opt[letter]
-    });
+    })
 }
 
 const first_arg = (args) => Object.keys(args).reduce((acc, key) => {
@@ -99,7 +99,7 @@ const validate_input = (args, alias) => {
         valid_alias.length < alias.length ? error_message('aliases') : '']
         .filter(e => e.length)
 
-    return { valid_args, valid_alias, errors } 
+    return { valid_args, valid_alias, errors }
 }
 
 module.exports = (args = [], alias = []) => {
@@ -115,6 +115,6 @@ module.exports = (args = [], alias = []) => {
         args: parsed.args,
         opt: parsed.opt,
         plain: parsed.plain,
-	...(errors.length ? { errors } : {})
+        ...(errors.length ? { errors } : {})
     }
 }
