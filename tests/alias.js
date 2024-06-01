@@ -33,5 +33,13 @@ module.exports = async ({ test, equal }) => {
                 plain: []
             })
         })
+        , test("options and args are applied to all aliases that start with the same letter", () => {
+            equal(cli('-a b a', ['apple', 'anker']), {
+                arg: { anker: 'b', apple: 'b', a: 'b' },
+                args: { anker: ['b', 'a'], apple: ['b', 'a'], a: ['b', 'a'] },
+                opt: { a: true, anker: true, apple: true },
+                plain: []
+            })
+        })
     ]
 }
