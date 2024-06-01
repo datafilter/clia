@@ -1,6 +1,6 @@
 {
   "name": "clia",
-  "version": "2024.5.31",
+  "version": "2024.6.1",
   "description": "Command line arguments parser",
   "main": "index.js",
   "scripts": {
