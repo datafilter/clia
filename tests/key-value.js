@@ -2,7 +2,7 @@ module.exports = async ({ test, equal }) => {
 
     const clia = require('../index')
 
-    const cli = (text) => text && clia(text.split(' ')) || clia(text)
+    const cli = (text) => text ? clia(text.split(' ')) : clia(text)
 
     return [
         test("key-value sets argument string", () => {

@@ -32,7 +32,7 @@ const combine_input = (inputs) =>
         if (opt) {
             const options = opt.map(o => ({ [o]: true })).reduce((acc, next) => ({ ...acc, ...next }), {})
             return {
-                tag: opt.length === 1 && opt.at(0) || acc.tag,
+                tag: opt.length === 1 ? opt.at(0) : acc.tag,
                 opt: { ...acc.opt, ...options },
                 args: acc.args,
                 plain: acc.plain
@@ -42,13 +42,13 @@ const combine_input = (inputs) =>
             if (arg === '--' && !acc.skip) {
                 acc.skip = true
             } else if (acc.tag) {
-                acc.args[acc.tag] = [...acc.args[acc.tag] || [], arg]
+                acc.args[acc.tag] = [...acc.args[acc.tag] ?? [], arg]
             }
             else acc.plain.push(arg)
         }
         if (kv) {
             const { k, v } = kv
-            acc.args[k] = [...acc.args[k] || [], v]
+            acc.args[k] = [...acc.args[k] ?? [], v]
         }
 
         return acc

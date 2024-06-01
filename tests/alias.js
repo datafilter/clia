@@ -2,7 +2,7 @@ module.exports = async ({ test, equal }) => {
 
     const clia = require('../index')
 
-    const cli = (text, alias) => text && clia(text.split(' '), alias) || clia()
+    const cli = (text, alias) => text ? clia(text.split(' '), alias) : clia()
 
     return [
         test("alias does not add args or opt if they are not set", () => {
@@ -14,14 +14,14 @@ module.exports = async ({ test, equal }) => {
             })
         })
         , test("alias sets arg and args values", () => {
-            equal(cli('-f banana apple --ananas dog cat', ['fruit', 'ananas']), {
-                arg: { fruit: 'banana', ananas: 'dog', f: 'banana' },
+            equal(cli('-f banana apple --animals dog cat', ['fruit', 'animals']), {
+                arg: { fruit: 'banana', animals: 'dog', f: 'banana' },
                 args: {
                     f: ['banana', 'apple'],
-                    ananas: ['dog', 'cat'],
+                    animals: ['dog', 'cat'],
                     fruit: ['banana', 'apple']
                 },
-                opt: { f: true, ananas: true, fruit: true },
+                opt: { f: true, animals: true, fruit: true },
                 plain: []
             })
         })
