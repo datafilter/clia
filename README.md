@@ -96,8 +96,7 @@ yields
     plain: ['valid', 'last-token']
 }
 ```
-
-It is recommended that you check for any input errors.
+To check for any user input errors:
 
 ```javascript
 // in main.js/index.js
