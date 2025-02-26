@@ -7,8 +7,8 @@ You can give it a quick test [in your browser on runkit](https://npm.runkit.com/
 const conf = clia('hello -a -ab -d world'.split(' '))
 ```
 
-Like the other parsers, clia follows the same syntax conventions documented in [design docs](https://github.com/datafilter/clia/blob/master/notes.md) with [lots of tests/examples here](
-https://github.com/datafilter/clia/tree/master/tests). 
+Like the other parsers, clia follows the same syntax conventions documented in [design docs](https://github.com/datafilter/clia/blob/main/notes.md) with [lots of tests/examples here](
+https://github.com/datafilter/clia/tree/main/tests). 
 
 
 ## usage
@@ -121,7 +121,7 @@ option `--=pet` yields: `{ .. opt: { '=pet': true }`
 
 ## example
 
-An example of where clia is used to parse command line arguments, with "autocomplete" _(`Cli option not found. Did you mean ___`)_ can be found [here](https://github.com/datafilter/t3st/blob/master/bin/parse.js)
+An example of where clia is used to parse command line arguments, with "autocomplete" _(`Cli option not found. Did you mean ___`)_ can be found [here](https://github.com/datafilter/t3st/blob/main/bin/parse.js)
 
 
 
