@@ -60,15 +60,11 @@ const combine_input = (inputs) =>
         plain: []
     })
 
-const copy_alias_values = (parsed, names) => {
-    names.forEach(name => {
-        const [letter] = name
-        if (parsed.args[letter])
-            parsed.args[name] = parsed.args[letter]
-        if (parsed.opt[letter])
-            parsed.opt[name] = parsed.opt[letter]
-    })
-}
+const collect_alias_values = (parsed, aliases) => aliases.reduce((acc, alias) => {
+    if (parsed.hasOwnProperty(alias.at(0)))
+        acc[alias] = parsed[alias.at(0)]
+    return acc
+}, {})
 
 const first_arg = (args) => Object.keys(args).reduce((acc, key) => {
     const [val] = args[key]
@@ -104,16 +100,17 @@ const validate_input = (args, alias) => {
 
 module.exports = (args = [], alias = []) => {
 
-    const { valid_args, valid_alias, errors } = validate_input(args, alias)
+    const { valid_args = [], valid_alias = [], errors = [] } = validate_input(args, alias)
 
-    const parsed = combine_input(valid_args ?? [])
+    const parsed = combine_input(valid_args)
 
-    copy_alias_values(parsed, valid_alias ?? [])
+    const args_with_alias = {...parsed.args, ...collect_alias_values(parsed.args, valid_alias)}
+    const opt_with_alias = {...parsed.opt, ...collect_alias_values(parsed.opt, valid_alias)}
 
     return {
-        arg: first_arg(parsed.args),
-        args: parsed.args,
-        opt: parsed.opt,
+        arg: first_arg(args_with_alias),
+        args: args_with_alias,
+        opt: opt_with_alias,
         plain: parsed.plain,
         ...(errors.length ? { errors } : {})
     }
