@@ -60,11 +60,9 @@ const combine_input = (inputs) =>
         plain: []
     })
 
-const collect_alias_values = (parsed, aliases) => aliases.reduce((acc, alias) => {
-    if (parsed.hasOwnProperty(alias.at(0)))
-        acc[alias] = parsed[alias.at(0)]
-    return acc
-}, {})
+const collect_alias_values = (parsed, aliases) => aliases
+    .filter((alias) => parsed.hasOwnProperty(alias.at(0)))
+    .reduce((acc, alias) => ({ ...{ [alias]: parsed[alias.at(0)] }, ...acc}), {})
 
 const first_arg = (args) => Object.keys(args).reduce((acc, key) => {
     const [val] = args[key]
